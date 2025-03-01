@@ -1,0 +1,28 @@
+---
+title: "Facebook Login on iOS"
+description: "Learn how to set up Facebook Login in your iOS app with Firebase Auth. Follow these steps to integrate Facebook login in your iOS application."
+keywords: ["facebook login", "ios", "firebase auth", "setup", "integration"]
+---
+
+# Facebook Login on iOS  
+
+This section assumes you’ve already set up Firebase Auth with Facebook in [the previous section](/docs/facebook-login/create-a-facebook-app). If you haven’t done that yet, please go back and complete those steps first. To set up Facebook Login in the iOS app, follow the next steps, in order.
+
+__1. Add your Bundle ID to Facebook__  
+
+As we mentioned previously when creating the Firebase project, each iOS app has a bundle ID, which you can see in Xcode, by clicking on the project in the left menu. Go to __Facebook Developers__ -> __Select app__ -> __Settings__ -> __Basic__ and add the Bundle ID in the __iOS__ -> __Bundle ID__ section. Then __Save__.  
+
+![](/../static/img/Screen-Shot-2020-03-12-at-3.24.43-PM.png)  
+
+As a reminder, here’s how to find your Bundle ID in Xcode:  
+
+![](/../static/img/Screen-Shot-2020-03-12-at-3.28.43-PM.png)  
+
+__2. Update Facebook App ID in Info.plist file__  
+
+Open the Info.plist file (as Source Code, if in Xcode) and replace the existing FB App ID with your own (obtained in the previous section). There are __TWO places__ that need updates: one in __CFBundleURLSchemes__ (prefixed with “__fb__” – make sure you still keep the __fb__ prefix), and one in __FacebookAppID__. Optionally, you can also update __FacebookDisplayName__  
+
+![](/../static/img/Screen-Shot-2020-03-12-at-3.34.13-PM.png)  
+
+That’s it. Simply re-run the iOS project and everything will be switched over to your own Facebook app.
+

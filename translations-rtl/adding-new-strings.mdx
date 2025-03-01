@@ -1,0 +1,32 @@
+---
+title: "Adding New Strings to Your React Native App"
+description: "Step-by-step guide on how to add new strings to your React Native app and ensure they are translated correctly in all supported languages."
+keywords: ["adding strings", "translations", "multi-language support", "React Native", "useTranslations hook", "localization", "i18n", "internationalization"]
+---
+
+# Adding New Strings
+
+As mentioned before, all the new strings that you add while customizing the app must appear in all the translations files. Otherwise, they will always be displayed in English.
+
+## 1. Use useTranslations  hook for all strings in the app  
+
+useTranslations is a hook that allows us to support multi languages in all of our React Native apps. This means that instead of using plain strings in the source code, we wrap them around a localized call. For example, instead of adding a text like this  
+
+```mdx 
+<Text>Random text here</Text>
+```
+
+You’ll be adding it like this   
+
+```mdx 
+<span style="font-size: 12.6px;">import { useTranslations } from '../../core/dopebase'
+...<br><br>const { localized } = useTranslations()<br>...
+</span><br><Text>{localized("Random text here")}</Text>  
+```  
+
+useTranslations hook can be found in src/core/dopebase
+
+## 2. Add the translations of the new string in all translations file
+After adding a new string, you need to provide the correct translations in all the supported languages for that string. To do this, simply update all the .json files from __src/translations__ folder, by adding the string as a key and the translation as the value. For example, adding the Arabic translation for the “Random string here” will look like this:  
+
+![](/../static/img/Screen-Shot-2020-03-04-at-10.41.58-AM.png)

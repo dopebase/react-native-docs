@@ -1,0 +1,32 @@
+---
+title: "Manage Songs in TikTok App Template"
+description: "Learn how to manually add and manage songs in your TikTok app template using Firestore Database. Follow the step-by-step guide to populate songs in your app."
+keywords: ["manage songs", "tiktok app template", "firestore database", "add songs", "song management", "firebase storage"]
+---
+
+# Manage Songs  
+ 
+To populate songs in your app, you need to add songs manually in your Firestore Database.
+First start a collection with the name __composer_songs__. 
+Then add a document in this format:  
+
+![](/../static/img/Screenshot-2021-03-29-at-12.45.12-PM.png)  
+
+Please note that the fields you should add are listed below and they should all be a type __string__ as seen in the picture above.
+
+
+__artist__  – this is the name of the artist.
+__coverURL__ this is an image link for the song cover.
+
+__duration__ – this is the duration of the song eg: “00:28”
+
+__streamURL__ – this is the url of the song. (you can as well upload the song on ur firebase storage, get the link and add it here.) For more information on supported file formats and overriding file extension, check out the official documentation here.
+
+__title__ – this is the title of the song.
+
+you can add as many songs as you want to display.
+
+To see the file where songs are fetched on ur app. Navigate to path __“src/screens/SongPickerScreen/api/firebase/songs.js”__
+There, you will find the code that fetches the list of songs added to your Firebase Firestore.
+
+Navigate to path __“src/screens/SongPickerScreen/SongPickerScreen.js”__ to see the file where this list of fetched songs are loaded for ui display. Also, on this same file, check line 100 to find the “__onItemPress__” method and here, you can trace the __loadCachedAudio__ method that is also called here to see how songs are loaded.

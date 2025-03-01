@@ -1,0 +1,34 @@
+---
+title: "Recommendation Algorithm for Dating App"
+description: "Learn how our dating app uses Firebase to compute and manage user recommendations efficiently."
+keywords: ["recommendation algorithm", "dating app", "firebase", "cloud functions", "react native", "firestore"]
+---
+
+# Recommendation Algorithm  
+
+As you already know, our React Native apps are using Firebase as the default backend. The app fetches and writes data from and to Firebase Firestore. Firestore is the database, containing several tables to structure all the data needed for the Dating app.
+We have also taken advantage of firebase cloud functions to enable fast computing and loading recommendations.
+
+## Computing New Recommendations  
+
+Recommendations are computed for new users when all required fields are available and valid.
+When a new user registers on the app, we have a firebase cloud function running to check that all required fields are available and valid and then compute recommendations base on these fields.
+
+Whenever there is a change in the value of any of the required fields, the same cloud function is triggered to compute new recommendations base on this new changes.
+
+To compute new recommendations, we first need to wipe out all old recommendations if any exist.
+
+Then we generate a compatible users query.
+We will need the user’s gender preference, settings fields to generate this query.
+Then we fetch users using the query generated. This will be our potential recommendations.
+
+We get existing swipes and filter it out, from the potential recommendations.
+We also use the distance radius from the user settings to filter out users that does not fit the search radius from the potential recommendations.
+
+We then write a final recommendations in the user’s recommendations collection with a size limit of 100 documents.
+
+__Computing new recommendations when previously computed recommendations are exhausted.__ 
+
+We have a different firebase cloud function tracking the recommendations collection size.
+We have set 15 as the threshold for users recommendations collection size.
+When the document size is less than the threshold set, the function is trigger and new recommendations is computed.

@@ -1,0 +1,24 @@
+---
+title: "Facebook Login on Android"
+description: "Learn how to set up Facebook Login in your Android app with Firebase Auth. Follow our step-by-step guide to integrate Facebook Login seamlessly."
+keywords: ["facebook login", "android", "firebase auth", "setup", "integration", "key hash", "facebook app id"]
+---
+
+# Facebook Login on Android  
+
+This section assumes you’ve already set up Firebase Auth with Facebook in [the previous section](/docs/facebook-login/). If you haven’t done that yet, please go back and complete those steps first. To set up Facebook Login in the Android app, follow the next steps, in order.
+
+__1. Generate a Key Hash for your release & debug keystore__  
+
+Follow [Facebook’s documentation](https://developers.facebook.com/docs/android/getting-started/#release-key-hash) to generate a key hash for your debug or/and release keystore. This is used for security purposes.
+
+__2. Place your package name and Key Hash in Facebook__
+
+In [Facebook Developers], go to [Your app] -> [Settings] -> [Basic]. In the Android section, add your package name and the key hash. The package name is the [applicationId], which you set up while configuring Firebase. As a reminder, you can find the [applicationId] in [android/app/build.gradle] file. 
+
+![](/../static/img/Screen-Shot-2020-03-12-at-5.20.52-PM.png)  
+
+__3. Update the FB App ID in the source code__
+
+In the code, open [android/app/src/main/res/values/strings.xml] file, and replace the facebook_app_id value, with your own Facebook App ID (obtained in [the previous section](/docs/facebook-login/create-a-facebook-app)). Now build and run the app again, and Facebook Login will work with your own app.
+

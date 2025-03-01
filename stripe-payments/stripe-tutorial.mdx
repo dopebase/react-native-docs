@@ -1,0 +1,168 @@
+---
+title: "Stripe Tutorial: Integrate Stripe Payment Module in React Native"
+description: "Learn how to integrate the Stripe payment module from one React Native app to another with this step-by-step tutorial."
+keywords: ["stripe tutorial", "react native", "stripe payment integration", "react native stripe", "stripe payment module"]
+---
+
+# Stripe Tutorial
+
+## Integrating Stripe Payment Module from One React Native App to Another
+
+This tutorial outlines the steps to integrate the Stripe payment module from an existing React Native app into another app.
+
+## Step 1: Install Required Dependencies
+
+Make sure you have the necessary Stripe dependencies installed in your target app. Run the following command:
+  
+  ```mdx
+  npm install @stripe/stripe-react-native
+  ```  
+
+  Step 2: Copy Payment Logic  
+
+1. __Copy Payment API__: 
+   – Copy the payment processing logic from `src/Core/payments/api/paymentProcessor/paymentRequestClient.js` to your target app. This includes functions like `chargeStripeCustomer`, `setupStripe`, etc.
+
+2. __Copy Hooks__: 
+
+   – Copy the `usePaymentRequest` and `usePaymentSheetManager` hooks from `src/Core/payments/usePaymentRequest.js` and `src/Core/payments/usePaymentSheetManager.js` respectively.
+
+3. __Copy Redux Actions__: 
+
+   – If your payment module uses Redux, copy the relevant actions and reducers from `src/Core/payments/redux/checkout.js` to your target app.
+
+## Step 3: Update Configuration
+
+1. __Stripe Configuration__: 
+
+   – Ensure that your target app has the necessary Stripe configuration. This includes the publishable key and any other required settings. Set this up in your app’s configuration file.
+
+2. __Google Services__: 
+
+   – If your app uses Firebase, ensure that the `googleServicesFile` is correctly set up in your `app.json` or `AndroidManifest.xml`.
+
+## Step 4: Implement Payment Logic
+
+1. __Create Payment Form__: 
+
+   – In your target app, create a payment form component where users can enter their payment details. Use the `StripeProvider` to wrap your app or the specific component where you handle payments.
+
+ ```mdx
+
+   import React from ‘react’;
+
+   import { StripeProvider } from ‘@stripe/stripe-react-native’;
+
+   import App from ‘./App’; // Your main app component
+
+   const AppWrapper = () => {
+
+     return (
+
+       <StripeProvider
+
+         publishableKey=”your-publishable-key”
+
+         merchantIdentifier=”merchant.identifier” // Optional
+
+       >
+
+         <App />
+
+       </StripeProvider>
+
+     );
+
+   };
+
+   export default AppWrapper;
+
+   ```
+
+2. __Use Payment Hooks__: 
+
+   – Use the `usePaymentRequest` and `usePaymentSheetManager` hooks in your payment form component to handle payment requests and manage the payment sheet.
+
+  ```mdx
+
+   import React, { useState } from ‘react’;
+
+   import { Button, View } from ‘react-native’;
+
+   import usePaymentRequest from ‘./path/to/usePaymentRequest’;
+
+   const PaymentForm = () => {
+
+     const appConfig = {}; // Your app configuration
+
+     const { chargeStripeCustomer, setupStripe } = usePaymentRequest(appConfig);
+
+     const [loading, setLoading] = useState(false);
+
+     const handlePayment = async () => {
+
+       setLoading(true);
+
+       const email = ‘customer@example.com’; // Get this from your form
+
+       const setupResponse = await setupStripe(email);
+
+       
+
+       if (setupResponse.success) {
+
+         const chargeResponse = await chargeStripeCustomer({
+
+           amount: 1000, // Amount in cents
+
+           currency: ‘usd’,
+
+           token: setupResponse.data.token, // Get token from your form
+
+         });
+
+         // Handle charge response
+
+       }
+
+       setLoading(false);
+
+     };
+
+     return (
+
+       <View>
+
+         <Button title=”Pay” onPress={handlePayment} disabled={loading} />
+
+       </View>
+
+     );
+
+   };
+
+   export default PaymentForm;
+
+   ```
+
+## Step 5: Test the Integration
+
+1. __Run Your App__: 
+
+   – Start your target app and navigate to the payment form.
+
+2. __Test Payments__: 
+
+   – Use test card numbers provided by Stripe to test the payment flow.
+
+## Step 6: Handle Errors and Edge Cases
+
+Make sure to handle errors gracefully, such as network issues or payment failures. Use alerts or notifications to inform users of any issues.
+
+## Additional Resources
+
+– [Stripe React Native Documentation](https://stripe.com/docs/payments/accept-a-payment?platform=react-native)
+
+– [React Native Stripe Example](https://github.com/stripe/react-native-stripe-sdk)
+
+By following these steps, you should be able to integrate the Stripe payment module from your existing React Native app into another app successfully.

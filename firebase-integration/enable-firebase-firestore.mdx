@@ -1,0 +1,21 @@
+---
+title: "Enable Firebase Firestore"
+description: "Learn how to enable Firebase Firestore for your mobile app by setting up the correct access permissions."
+keywords: ["firebase", "firestore", "enable firestore", "firebase integration", "mobile app", "access permissions"]
+---
+
+# Enable Firebase Firestore  
+
+In order to allow the mobile app to read and write data to/from Firebase Firestore, we need to set up the correct access permissions. To do that, just head over to __Database__ -> __Cloud Firestore__ and set the Rules for writes and reads to __public__.
+  
+  ```mdx
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+```  
+![](/../static/img/Screen-Shot-2019-04-09-at-10.09.20-PM-1024x420.png)
+

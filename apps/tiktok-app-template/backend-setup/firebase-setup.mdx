@@ -1,0 +1,48 @@
+---
+title: "Firebase Setup for TikTok App Template"
+description: "Step-by-step guide to link your Firebase account and create Firestore tables for the TikTok app template."
+keywords: ["firebase setup", "tiktok app template", "firestore tables", "react native", "firebase integration"]
+---
+
+# Firebase Setup
+
+## 1. Linking Your Own Firebase Account  
+
+To set up your own backend, you need to first link your own Firebase account to the React Native source code. This is pretty straightforward and common to all React Native apps that use Firebase as backend, but if you haven’t done this already, please follow our step-by-step [Firebase Setup guide](/docs/firebase-integration).  
+
+## 2. Creating The Firestore Tables  
+
+All Firestore database tables are created automatically for you, as you start using the app. To populate all the tables, you first do the following, directly in the app:
+
+Register two new users with e-mail and password (feel free to upload profile pictures, to test that Firebase Storage was properly set up)
+Have those users follow each other (you can use the Search screen to find them)
+Create a new TikTok (no need for a background song, we’ll set that up that later) – Make sure you also use a hashtag
+Like and comment on that TikTok post
+Add a few chat messages between these 2 users
+Initially, the first post won’t show up in the other user’s feed. That’s because you need to create the required Firestore indexes on all the needed tables. In the console, please watch out for any warnings / errors that look like this:  
+
+```mdx
+10. Error: Firestore: Operation was rejected because the system is not in a state required for the operation`s execution. (firestore/failed-precondition)”
+```  
+ 
+ or like this  
+
+ ```mdx
+ The query requires an index. You can create it here:
+```  
+
+
+This error shows up when first running our apps that have more complex performance improvements.
+
+You need to create the proper indices in your Firestore tables, used for loading data much faster. We do console.log these errors, so simply look into the console for a custom Firebase URL that looks like this (“The query requires an index. You can create it here: “):  
+
+![](/../static/img/index2.png)  
+
+After following all these steps, refresh your Firebase Console, go to the Firestore tab, and you’ll see the following tables:
+
+__users__
+__SocialNetwork_Posts__
+__socialnetwork_comments__
+__socialnetwork_reactions__
+__social_feeds__
+__entities__

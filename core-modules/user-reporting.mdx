@@ -1,0 +1,67 @@
+---
+title: "User Reporting Module Documentation"
+description: "Learn how to implement user blocking and reporting in your mobile applications using the User Reporting module. This guide covers dependencies, setup, and customization for your backend."
+keywords: ["user reporting", "user blocking", "mobile app", "firebase", "redux", "apple", "google", "messaging", "dating apps", "social networks", "marketplace apps", "photo sharing apps"]
+---
+
+# User Reporting  
+
+User blocking and reporting is a feature that is required by Apple and Google in all mobile applications where users can create and share their own content with others. This is extremely important in applications such as:
+
++ messaging
++ dating apps
++ social networks
++ marketplace apps
++ photo sharing apps  
+
+We’ve abstracted out this functionality into the User Reporting module, which lives in __src/Core/user-reporting__.
+
+The module contains only a few important pieces:
+
++ __userReports__ reducer  
+
+       + your app needs to support this reducer in its redux configuration, in order for the module to work properly
++ firebase / __reportingManager__
+        + by default, our app uses Firebase for storing all user reports.
+        + the Firestore table name is “__reports__“, which gets automatically created when you report a user for the first time
+        + to use the default Firebase reporting manager, simply use the code snippet below:  
+
+```mdx 
+import { reportingManager } from 'path to Core/user-reporting';
+...
+reportingManager.markAbuse(myUserID, otherUserID, type).then(response => {
+    // myUserID user just blocked the otherUserID user
+});
+``` 
+
+## Dependencies 
+
+Given that this feature is required by Apple and Google for certain functionalities where users can share content between them, the user-reporting module is added as a dependency to the following Core Modules:
+
++ Chat
++ Video Chat
++ Feed
++ Social Graph  
+
+__This means that if your app imports one of those modules, you’ll need to import the user-reporting module too__.
+
+The user reports are being used by those modules to filter out content from the blocked users, such as :
+
++ posts
++ chat messages
++ user lists
++ notifications
++ stories  
+
+## Changing to Your Own Backend  
+
+If you are planning to use your own backend for the entire application, you’ll need to migrate the user reporting module to your own server endpoints. Fortunately, all you need to do is override these two methods in __Core/user-reporting/firebase.js__: 
+
+```mdx 
+export const markAbuse = (fromUserID, toUserID, abuseType) => {
+  // call the endpoint that blocks an user
+}
+export const unsubscribeAbuseDB = (userID, callback) => {
+ // call the endpoint that retrieves the list of all users blocked by userID
+}
+```

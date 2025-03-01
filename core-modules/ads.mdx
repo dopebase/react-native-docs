@@ -1,0 +1,40 @@
+---
+title: "Integrate Facebook Ads in React Native Apps"
+description: "Discover how to seamlessly integrate Facebook Ads into your React Native apps with our step-by-step guide. Learn to set up interstitial and native ads using the Facebook Audience Network."
+keywords: ["facebook ads", "react native", "audience network", "interstitial ads", "native ads", "expo-ads-facebook", "react native ads"]
+---
+
+# Ads  
+## Facebook Ads  
+
+Some of our React Native apps have built-in functionality for Facebook Ads (Audience Network). We’ve included support for interstitial ads and native ads. The code lives in __src/Core/ads/facebook__. The Facebook Audience Network library is already included for you. If it’s not, you can simply install it by following the official steps outlined in [expo-ads-facebook documentation](https://docs.expo.dev/versions/latest/sdk/facebook-ads/). _1. Create a FB__ [Audience Network](https://www.facebook.com/audiencenetwork/monetize) __account 2. Get a placement ID for Android, and a placement ID for iOS 3. Update the placement IDs in the config.js file of your React Native template_  
+
+```mdx  
+adsConfig: {
+  facebookAdsPlacementID: Platform.OS === 'ios' ? "834318260403282_834914470343661" : "834318260403282_834390467062728",
+  adSlotInjectionInterval: 10
+},
+```   
+
+__4. Add your device’s hash to the list of testing devices in the Facebook Developer Console__. (follow Facebook’s official instructions on how to do this) __5. Update the audience-network SDK version manually__ Changes are that the Expo NPM package wrapping up the audience network SDK is deprecated by the time you build your Facebook ads. Unfortunately this is unavoidable, since the open-source community doesn’t have the bandwidth to keep up with all Facebook updates. Facebook requires new Audience Network accounts to use the latest SDK version, so you’ll need to update this in node_modules manually:
+  
++ Run “npm install“
++ __For Android__:
+      + Open node_modules/expo-ads-facebook/android/build.gradle
+      + Change the line with the SDK version with this:  
+      ```mdx  
+      api 'com.facebook.android:audience-network-sdk:5.+'  
+      ```
++ __For iOS__:  
+
+        + Open node_modules/expo-ads-facebook/ios/EXAdsFacebook.podspec
+        + Modify the framework version to the latest one
+        ```mdx 
+          s.dependency 'FBAudienceNetwork', '5.9.0'
+          ```
+        + Re-run “__pod update__” in the __ios__ folder  
+
++ Now build your project again
++ __Important__: Every time you remove node_modules or clean your React Native project you’ll have to redo this operation, since this change is getting lost.  
+
+__Native Ads__ Native ads are enabled by default in our social networks. If you completed steps 1-4, then you should already be seeing testing ads in your feed. For native ads, you can leverage __IMNativeFBAdComponentView__ component (which lives in __src/Core/ads/facebook__). This is already used by default, but you can take a look here if you want to understand the code or change the native ads UI. __Interstitial Ads__ If you instead want to use interstitial ads, here’s a code snippet that triggers them

@@ -1,0 +1,137 @@
+---
+title: "Getting Started with React & Node.js"
+description: "Step-by-step guide to set up and configure the admin panel using React and Node.js, including Firebase configuration and project setup."
+keywords: ["react", "node.js", "admin panel", "firebase", "project setup", "configuration", "guide"]
+---
+
+import Note from "@theme/Admonition";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Getting Started with React & Node.js
+
+<Note type="important">
+  This guide provides step-by-step instructions for setting up our Admin panels on your machine. These panels are designed to simplify the management of the applications created by our team. First, you will need to install Node.js. Follow this [Official Guide](https://nodejs.org/en/download/package-manage) to start with Node.js that includes npm, a package manager that helps install everything else we need.
+</Note>
+
+## 1. Preparing Your Project
+
+Once Node.js is installed, open your terminal and navigate to the admin panel folder. Your project structure should look like
+![Admin Panel Preview](/../static/img/Screen-Shot-2025-01-04-at-10.57.57-PM.png)
+
+Run the following command to set up the project dependencies:
+
+```mdx
+yarn install
+cd client
+yarn install
+cd ..
+```
+
+This will install all required packages.
+
+---
+
+## 2. Configuring Your Admin Panel
+
+<Tabs>
+<TabItem value="server" label="Server Configuration">
+Before running the project, you need to set up your Firebase configuration:
+1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com) - If you haven't set it up already.
+2. Download your service account key (JSON file) from Firebase Console:
+   - Go to Project Settings > Service Accounts
+   - Click "Generate New Private Key"
+    ![Admin Panel Preview](/../static/img/annotely_image_11.jpeg)
+3. Replace contents of the file in `db/firebaseDB/production-a5g04-firebase-adminsdk-nin6u-d632b424d4.json` with this JSON file you just downloaded.
+4. Finally update the `bucketURL` in `db/firebaseDB/index.js` with your Firebase Storage bucket URL
+
+</TabItem>
+
+<TabItem value="client" label="Client Configuration">
+Before running the project, you need to set up your Firebase configuration:
+1. From your firebase console add a web app to your Firebase project:
+   - Click on Project Settings (gear icon)
+   - Under "Your apps", click the web icon and register a web app.
+    ![Admin Panel Preview](/../static/img/annotely_image_13.png)
+3. Copy the provided firebaseConfig object
+4. Replace the firebaseConfig object in `client/src/admin/firebase.js` that looks like:
+```js
+const firebaseConfig = { 
+  apiKey: "your-api-key", 
+  authDomain: "your-project-id.firebaseapp.com", 
+  projectId: "your-project-id", 
+  storageBucket: "your-project-id.appspot.com", 
+  messagingSenderId: "your-sender-id", 
+  appId: "your-app-id", 
+  measurementId: "your-measurement-id" 
+};
+```
+with yours.
+</TabItem>
+</Tabs>
+
+## 3. Running the Project
+
+To start both the server and client applications, run the below commands from the root directory:
+
+```bash
+# In the root directory
+yarn start     
+cd client
+yarn start        
+```
+
+This will launch the server and open the admin panel in your default web browser, go ahead and sigup.
+
+![Admin Panel Preview](/../static/img/Screenshot-2025-01-05-at-12.58.53-AM.png)
+
+---
+
+## 5. Important notes and tips about the panel
+### API Routes
+The API routes are defined in `api/apiRoutes.js`. This file contains all the endpoint definitions for:
+
+- Authentication (login, register)
+- User management
+- File uploads
+- Notifications
+- Email services
+- CRUD operations for various entities (Templates, Categories, Products, Orders)
+
+To add new routes:
+1. Create a new controller in the controllers directory
+2. Import it in apiRoute.js
+3. Define your routes following the existing pattern:
+```js
+app.route('/api/your-endpoint')
+    .get(requestAuth, (req, res) => { yourController.list(req, res, db) })
+```
+### Database Interface
+The project uses a flexible database interface pattern located in `db/instamobileDB`. The current implementation uses Firebase, but you can easily switch to another database by ***Creating a new class that implements all methods in FirebaseDBManager***
+
+### Email Configuration
+The email functionality uses SendGrid for sending emails.
+
+<Note type="important">
+
+Replace the SendGrid API key in your email controller with your own key:
+
+1. Sign up for a SendGrid account
+
+2. Generate an API key from SendGrid's dashboard
+
+3. Replace the API key in `api/controllers/EmailController.js`:
+
+```js
+
+const myKey = "YOUR_SENDGRID_API_KEY"
+
+```
+
+</Note>
+---
+
+Your admin panel is now fully set up and linked to your Firebase account. You can manage users, posts, and stories from the admin interface.
+
+---
+

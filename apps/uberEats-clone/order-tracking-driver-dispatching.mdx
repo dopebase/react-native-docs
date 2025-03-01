@@ -1,0 +1,40 @@
+---
+title: "Order Tracking & Driver Dispatching for UberEats Clone"
+description: "Learn about the order lifecycle, tracking, and driver dispatching mechanism in our UberEats Clone app. Understand how to deploy the Firebase function for dispatching orders."
+keywords: ["order tracking", "driver dispatching", "UberEats clone", "Firebase function", "React Native", "delivery tracking"]
+---
+
+# Order Tracking & Driver Dispatching  
+
+Here’s the order lifecycle for our UberEats Clone:
+
+1. Customer places a new order
+2. Restaurant accepts/rejects the new order
+3. If accepted, the new order gets dispatched to an available driver that is close to the restaurant
+4. The driver can accept or reject the new order
+5. If the driver accepts the new order, delivery mode starts for that order
+6. Driver drives to restaurant to pick up order. Once picked up, driver updates the status in the app
+7. After pick up, order status gets updated to driving to customer
+8. Once a driver delivers the order, they mark the order as completed in the driver app
+9. If the driver rejects the order, the dispatch starts again (go to step 3) from a different available driver  
+
+Customers can track all of these statuses in their delivery tracking flow in the app. All of the order updates above are mostly happening in the React Native code, directly on the client, since they are a result of user actions (driver accepts, restaurant rejects, customer places order, etc). __The only difference is the dispatch mechanism__. The dispatch mechanism lives on the backend side, since it needs access to all available drivers and restaurants, in order to decide what driver might be a good fit to fulfill an order. 
+
+The dispatch mechanism is implemented via a Firebase Function. You can find this dispatch function in the downloaded archive, under __Firebase/functions/products/delivery.js.__ Take a look to get familiar with the dispatch logic. In order for your Firebase backend to apply this dispatch logic, you’ll need to deploy this function to your Firebase account. Check [Here](https://instaflutter.com/docs/tutorials/how-to-deploy-your-firebase-functions) to see indepth steps of how to deploy your firebase function 
+   
+    __1. Install Firebase Tools__ If you’ve never used Firebase functions before, you need to install this in the command line:  
+
+```mdx  
+npm install -g firebase-tools
+```  
+__2. Deploy Firebase dispatch function__ In the Terminal, locate the Firebase folder from the download archive and run:  
+
+```mdx 
+cd ~/Downloads/YOUR_PATH_TO_FIREBASE_FOLDER
+npm install && firebase deploy 
+```  
+When the deployment finishes, you’ll be able to find this function in your Firebase Console, under the Function tab:  
+
+![](/../static/img/Screen-Shot-2020-08-16-at-12.13.07-PM-1024x210.png)  
+ 
+ You can inspect the logs for this order, which will show you intermediary updates for each order delivery that is in progress.

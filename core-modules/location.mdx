@@ -1,0 +1,36 @@
+---
+title: "Location Module Documentation"
+description: "Learn about the Location module in our project, including the IMLocationSelectorModal component for interactive location selection."
+keywords: ["location module", "IMLocationSelectorModal", "interactive UI", "location selection", "real estate app", "social networks app", "universal listings app"]
+---
+
+
+# Location   
+
+Location, which lives in __src/Core/location__, contains our UI code for dealing with location operations, such choosing a location in an interactive UI. The main component in this module is __IMLocationSelectorModal__.
+
+## IMLocationSelectorModal
+This is a UI component that displays a map on the screen and allows the user to interact with it in order to choose a specific location. We use this component in situations like:
+
++ Adding real estate items (in the real estate app)
++ Checkins in social networks apps
++ Picking the store locations in universal listings app  
+
+To use this component, all you need to do is this:  
+```mdx 
+<IMLocationSelectorModal
+  isVisible={locationSelectorVisible}
+  onCancel={onLocationSelectorPress}
+  onDone={onLocationSelectorDone}
+  onChangeLocation={onChangeLocation}
+  appStyles={AppStyles}
+/> 
+```  
+The names of the props should be pretty much self-explanatory. You’ll notice that the initial coordinate on which the map is focused is a static location. You can specify that location inside the IMLocationSelectorModal file:  
+
+```mdx
+const [region, setRegion] = useState({
+  latitude: 37.7749,
+  longitude: -122.4194,
+}); 
+```

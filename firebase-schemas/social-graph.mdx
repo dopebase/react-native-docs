@@ -1,0 +1,40 @@
+---
+title: "Social Graph Firebase Schemas"
+description: "Learn about the social graph collections in Firebase that store user relationships such as follow/following or friendship. Understand the structure and how to efficiently manage these collections."
+keywords: ["social graph", "firebase schemas", "user relationships", "follow", "friendship", "firebase collections"]
+---
+
+# Social Graph 
+  
+The social graph collections store the data that defines the relationships between different users, such as follow/following or friendship.
+
+When a user makes a friend request or a follow request to another user, we store that data in the **social_graph** collection. In this collection, for each user ID, we store two subcollections:
+
++ __inbound_users__: all the users that made a friend/follow request to the current user (incoming requests)
++ __outbound_users__: all the users to whom the current user made a friend / follow request (outgoing requests)
+For user A, if we find user B in both subcollections, it means user A and B are friends (or they follow each other, in apps such as Instagram – mutual follow).
+
+Here’s the exact Firebase paths for the two subcollections:
+
+`social_graph/{userID}/inbound_users/{friendID}/{friendData}`
+`social_graph/{userID}/outbound_users/{friendID}/{friendData}`  
+
+Here’s how the Firebase collections look like in practice: 
+
+![](/../static/img/Screen-Shot-2021-08-19-at-9.39.09-AM.png)  
+
+Please note how the second column contains the actual real user IDs. This allows us to retrieve the list of incoming and outgoing follows for a given user efficiently, making our app load fast.  
+
+![](/../static/img/Screen-Shot-2021-08-19-at-9.39.51-AM.png)  
+
+Note how the IDs from the 3rd column above are the user IDs for the actual friends. This allows us to update the entries quickly for any given pair of users (user_ID, friend_ID).
+
+![](/../static/img/Screen-Shot-2021-08-19-at-9.40.21-AM.png)  
+
+Note how we store the entire user data in these subcollections. This allows us to retrieve the friends list / list of followers super fast, so the app is fast. The downside is that every time an user updates their profile (first name, last name or profile photo) we need to make sure we update these collections. This update is done via a Firebase Function that detects whenever a user changes their profile and updates the “social_graph” collection accordingly. Since we stored the data efficiently (keyed subcollections on user IDs and friend IDs), this update is super fast too.
+
+## Code Path  
+
+If you want to see where exactly the code writes and reads from the social_graph collection, simply check out all the methods in __src/Core/socialgraph/friendships/api/firebase/friendship.js__.
+
+This is the only file that you need to change if you want to re-define these collections to suit your own needs.

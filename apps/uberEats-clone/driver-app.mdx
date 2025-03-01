@@ -1,0 +1,45 @@
+---
+title: "Driver App for UberEats Clone"
+description: "Learn how to set up and configure the driver app for the UberEats clone. Follow the steps to enable drivers to accept orders, update statuses, and provide location data."
+keywords: ["driver app", "UberEats clone", "React Native", "setup", "configuration", "delivery app"]
+---
+
+import Note from "@theme/Admonition"
+import Admonition from "@theme/Admonition"
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Driver App
+
+<Admonition type="info">
+When you run the app in the original unmodified version of our UberEats React Native clone, you'll notice that the user experience is that of your customers – they can view restaurants, food items and place orders. Our UberEats Clone also includes the Driver App, which allows your drivers to accept new delivery orders, view their delivery history, set themselves as online/offline, update order statuses, provide location data so customers can track them, etc.
+</Admonition>
+
+## Configuration Steps
+
+### Setting Up the Driver Role
+
+<Tabs>
+  <TabItem value="step1" label="Step 1" default>
+    Have the driver signup and should be greeted with the customer view.
+  </TabItem>
+  <TabItem value="step2" label="Step 2">
+    Next head to firestore `user` collection to locate this newly signed user. You need to add to these fields:
+    
+    - role : "driver" (string)
+    - carPictureURL: "url-path" (string). You can use value: https://firebasestorage.googleapis.com/v0/b/development-69cdc.appspot.com/o/UberXL.jpeg?alt=media&token=1b1c97ba-9389-4e6b-8f4e-6cd71ba4ba66
+    - carName - Teslax
+    
+    Great now when the driver logs back in, they will be able to receive, accept or reject orders from customers.
+
+    <img 
+      src={require("/../static/img/Screenshot_1733843647-portrait.png").default}
+      alt="Screenshot of the app"
+      style={{width: "35%", height: "25%", display: "block", margin: "0 auto"}}
+    />
+  </TabItem>
+</Tabs>
+
+:::tip
+You can go ahead to your firebase functions to `functions/products/delivery.js` where you will find the logic behind the customer and driver matching that includes the distance radius and other matching terms. Go ahead and customize it according to your needs and requirements.
+:::

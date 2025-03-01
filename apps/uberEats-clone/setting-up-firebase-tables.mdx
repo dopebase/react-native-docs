@@ -1,0 +1,32 @@
+---
+title: "Setting Up Firebase Tables for UberEats Clone"
+description: "Learn how to set up Firebase collections for the UberEats clone app, including importing restaurant data automatically to save time."
+keywords: ["firebase", "firebase collections", "ubereats clone", "react native", "firebase setup", "import restaurant data"]
+---
+
+# Setting Up Firebase Collections
+
+As you already know, our React Native apps are using Firebase as the default backend. The app fetches and writes data from and to Firebase Firestore. Firestore is the database, containing several collections to structure all the data needed for the UberEats clone, such as users, drivers, orders, etc. In **src/config/ConsumerAppConfig.js**. You can find the names of the UberEats firebase collections:
+
+```js
+tables: {
+  vendorsTableName: 'vendors',
+  vendorOrdersTableName: 'restaurant_orders',
+  vendorDeliveriesTableName: 'restaurant_deliveries',
+  vendorFilterTableName: 'vendor_filters',
+  vendorReviewsTableName: 'vendor_reviews',
+  vendorProductsTableName: 'vendor_products',
+  reservationsTableName: 'reservations',
+  vendorCategoriesTableName: 'vendor_categories',
+}
+```
+
+While many of these tables get populated automatically as your users (consumers) are using the app, there are a few things you need to set up so that restaurant owners, users and driver get the most out of the app.
+
+:::important
+You can rename these tables as you wish, but make sure you properly replace all the occurrences in the source code, otherwise your app will break.
+:::
+
+## Importing Restaurant Data Seed Automatically
+
+You can import all of our test restaurant data into your own Firebase automatically. **This would save you a lot of time**, since you don’t need to add each entity manually. You can edit the fields later, to add your own photos, names, locations, etc. Go ahead to [How to seed your firebase with our data](https://instaflutter.com/docs/tutorials/how-to-seed-data) too see all the step by step guide you need to set it up.

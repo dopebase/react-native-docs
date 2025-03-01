@@ -1,0 +1,61 @@
+---
+title: "Exploring the Codebase of TikTok App Template - Hashtags"
+description: "Learn how to extract, store, and display hashtags in the TikTok app template. This guide covers the implementation details in the NewPostScreen and DiscoverScreen."
+keywords: ["tiktok app template", "hashtags", "new post", "discover screen", "firebase", "react native"]
+---
+
+# Hashtags  
+When composing a new post with an hashtag, you will need to extract all hashtags from this new post. This is done in the file “__src/screens/NewPostScreen/NewPostScreen.js__” in the method that can be found in __line 55__  with the name “__findHastags__”.  We called this method in __line 72__.  
+
+```mdx 
+const onShare = () => {
+  setLoading(true);
+  const hashtags = findHashtags(newPost.current.postText);
+  ```  
+  In the method findHashtag, we have used a regular expression to extract hashtags from the caption of a new post. The findHastags method returns and array of hashtags found in the caption of this new post.
+
+We have stored the array of hashtags in __hashtags__ field in the new post object in __line 76__. This new post object also contain fields like “authorID” and “postMedia”.  
+
+```mdx 
+authorID: currentUser.id,
+hashtags,
+postMedia: media,  
+```  
+Still in __NewPostScreen.js__ file, In __line 94__, you will find “__postAPIManager?.addPost__”.  This method is called with __postToUpload__ object which is an object with the necessary details of the post to upload including fields like __hashtags__. 
+
+```mdx 
+};
+await postAPIManager?.addPost(
+  postToUpload,  
+  ```
+    The method “__postAPIManager?.addPost__” is defined in the path to the file “__src/Core/socialGraph/feed/api/firebase/post.js__”. Here, in __line 371__,  you will find the definition of the __addPost__ function. In this function, at __line 405__  you will find how each hashtags is saved in the Firebase firestore document.  
+
+    ```mdx
+    finalPost.hashtags.forEach((hashtag) => {
+  const hashtagRef = firebase
+    .firestore()
+    .collection('entities')
+    .doc('social_feeds_hashtags')
+    .collection(hashtag)
+    .doc(finalPost.id);
+    ``` 
+
+## Reading and displaying hashtags in Discover Screen  
+
+Navigate to path “__src/screens/DiscoverScreen/DiscoverScreen.js__”. Here, you will find the file that displays the discover screen.  We have the discover post at __line 17__ with the name __discoverFeedPosts__. 
+ 
+ ```mdx
+ const discoverFeedPosts = useSelector(
+  (state) => state.feed.discoverFeedPosts,
+);  
+```  
+At __line 93__,  we have passed this discoverFeedPosts to the method __filterOutRelatedPosts__  that filters out related discover posts.
+In this filterOutRelatedPosts method, at __line 59__, we have returned a method with the name __groupByHashTags__ that takes the filteredPosts array.
+
+This groupByHashTags  simply groups the filteredPosts by hashtags and returned an array of grouped hashtags posts in this format:  
+
+```mdx 
+{ hashtag: hashtag, videos: [filteredPost] } 
+
+```
+

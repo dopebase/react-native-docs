@@ -1,0 +1,35 @@
+---
+title: "Camera Module Documentation"
+description: "Learn how to use the Camera module in the Core subsystem for taking photos and videos with a full screen camera."
+keywords: ["camera module", "core subsystem", "photos", "videos", "IMCameraModal", "expo-camera"]
+---
+
+
+# Camera  
+
+Camera, a module which lives in Core/camera, is our subsystem that allows taking photos and videos with the full screen camera. __IMCameraModal__ is the most important component, which can be used as follows:  
+```mdx
+<IMCameraModal
+  isCameraOpen={isCameraOpen}
+  onImagePost={onImagePost}
+  onCameraClose={onCameraClose}
+/>  
+```  
+This component handles a few complex tasks, such as:
+
++ switching between front (IMPreCamera.js) and back camera (IMPostCamera.js)
++ taking pictures
++ recording videos
++ importing photos and videos from the library  
+
+It sends back the asset source via __onImagePost_ callback. Here’s a simple implementation of handling the response of camera selection:  
+
+```mdx 
+onPostStory = async source => {
+ // use source.uri to handle the asset on device (photo / video)
+}
+```  
+Under the hood, it relies on [expo-camera](https://docs.expo.dev/versions/latest/sdk/camera/) package.
+
+
+

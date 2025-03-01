@@ -1,0 +1,40 @@
+---
+title: "Link Firebase Account to Your Mobile App"
+description: "Learn how to link your Firebase account to your React Native mobile app by following this step-by-step guide. Ensure your app uses your own Firebase backend."
+keywords: ["firebase integration", "react native", "firebase configuration", "mobile app backend", "firebase setup"]
+---
+
+# Link Firebase Account to Your Mobile App  
+
+Once you’ve created the app, Firebase will generate a configuration file for you. You will add this file in your React Native app. This is how the React Native app can use your own Firebase backend. To do that, just download the configuration file and replace the existing mock files:
+
+iOS: Download the GoogleService-Info-plist file and override the existing ios/NameOfApp/GoogleService-Info.plist file.
+Android: Download the google-service.json file and replace the existing android/app/google-service.json file.
+In both cases: If your app has a config.js file in Core/api/firebase, you’ll need to update that too, with your own project info.
+If you already had an app in Firebase, you can find and download this configuration file in Firebase Console -> Project Settings.  
+
+![](/../static/img/Screen-Shot-2019-03-05-at-6.33.36-PM.png)  
+  
+If your app has a Core/api/firebase/config.js file, you’ll need to update this configuration too:  
+
+```mdx  
+const firebaseConfig = {
+  apiKey: 'dsadas-imgQ',
+  authDomain: 'production-a9404.firebaseapp.com',
+  databaseURL: 'https://testapp-a9404.firebaseio.com',
+  projectId: 'testapp-a9404',
+  storageBucket: 'testapp-a9404.appspot.com',
+  messagingSenderId: '525472070734',
+  appId: '1:52522070731:web:ee873bd62c0deb7eba61ce',
+};  
+```  
+If you do not have an existing web app, you will have to create one to get these fields.
+
+To create one, navigate to project settings, click on Add app and click on the web icon. Enter ur App nickname and click on Register app.
+
+You should be able to access your firebase object after registering.  
+ 
+ ![](/../static/img/Screenshot-2020-06-08-at-10.29.17-PM-1024x722.png)
+
+That’s it. Now, when you run your brand new React Native template, the mobile app will use your own Firebase backend, as opposed to our default one. Make sure you add all the tables and the required data in your Firebase so that the app will have items to display (e.g. food categories, chat messages, etc.). To quickly test the react-native firebase integration, try registering a new user and see if they show up in Firebase -> Authentication tab.
+

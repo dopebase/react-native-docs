@@ -1,0 +1,83 @@
+---
+title: "Onboarding Module Documentation"
+description: "Comprehensive guide to the Onboarding module in the instamobile app, covering walkthrough flow, login, registration, and more."
+keywords: ["onboarding", "walkthrough", "login", "registration", "firebase auth", "sms verification", "persistent login", "country code picker"]
+---
+
+# Onboarding
+
+The Onboarding module lives in __src/Core/onboarding__. This module is in charge of handling the user onboarding flow, such as:
+
++ the walkthrough flow
++ login
++ registration
++ welcome screen
++ country code picker
++ phone authentication
++ SMS code verification
++ Firebase Auth interactions
++ persistent login credentials
++ etc 
+
+There are 8 main UI components that reside in this module. So you need to change the code in here, if you have to make customizations in any of the following:
+
++ __Walkthrough Screens__
++ __Welcome Screen (a.k.a Landing Screen)__
++ __Login Screen (Email and Password)__
++ __Phone Login Screen (with SMS verification)__
++ __Sign up Screen (Email and Password)__
++ __Phone Sign up Screen__
++ __Country Code Picker__
++ __Terms of Use and Conditions View__  
+
+
+Implementation wise, the onboarding module contains the following components:
+
++ UI screens
++ A reducer called “auth” in onboarding/redux folder
++ Authentication Manager 
+   + lives in onboarding/utils/authManager.js
+   + the only component that is interacting with the backend for authentication
+   + It’s using firebaseAuth as the default backend (which lives in src/Core/firebase/auth.js)
++ LoadScreen
+   + this is the first screen of the app, and it decides how the initial UI should look like, based on the persistent login credentials as well as the persisted walkthrough impression flag
+    
+    
+  ## Google SignIn  
+
+__1. Retrieve Web Client ID__
+
+To set up Google SignIn you have to enable it in the authentication tab on your Firebase console and then retrieve your Web Client ID from the Web Configuration.  
+
+![](/../static/img/Screenshot-2021-08-02-at-10.10.31.png)   
+
+__2. Insert Web Client ID into your code__
+
+The next thing you need to do is to update the <span style= {{color: 'red' }}> config.js </span> file with your Web Client ID:  
+
+```mdx  
+const ChatConfig = {
+  ....
+  webClientId: 'your Web Client ID',
+  ....
+} 
+```  
+
+__Adding Your Own Backend__  
+
+A common use case for our customers is that they have their own authentication backend, and they don’t want to use the default Firebase integration. If that’s the case, then you’ll need to create your own methods that interact with the registration and login endpoints. You’ll basically have to re-route these interactions from Firebase towards your own server. Fortunately, our app has been built with this in mind, so switching to your own server is extremely simple. All you need to do is to rewrite the implementation of the __authManager.js__ (which lives in onboarding/utils/authManager.js). That’s it. A single class to write, with several methods:  
+
+```mdx 
+const authManager = {
+  retrievePersistedAuthUser,
+  loginWithEmailAndPassword,
+  logout,
+  createAccountWithEmailAndPassword,
+  loginOrSignUpWithFacebook,
+  sendSMSToPhoneNumber,
+  loginWithSMSCode,
+  registerWithPhoneNumber,
+  retrieveUserByPhone,
+};  
+```  
+The best part is that you already have an example of implementing this in the source code (which hits the Firebase server).

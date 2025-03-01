@@ -1,0 +1,135 @@
+---
+title: "Setting Up Firebase Tables for Appointments App"
+description: "Learn how to set up Firebase tables for the appointments app, including categories, filters, vendors, and professionals. Follow our step-by-step guide for a seamless setup."
+keywords: ["firebase tables", "appointments app", "react native", "firebase firestore", "categories", "filters", "vendors", "professionals", "data seeding"]
+---
+
+# Setting Up Firebase Tables
+
+Our React Native apps use Firebase as the default backend. The app interacts with Firebase Firestore for data operations, utilizing several collections to structure data like users, vendors, professionals, and categories. You can find the collection names in `src/config/index.js`.
+```mdx 
+tables: {
+  vendorsTableName: 'appointments_vendors',
+  vendorReviewsTableName: 'appointments_reviews',
+  vendorProductsTableName: 'users',
+  bookingsTableName: 'appointments_bookings',
+  vendorFilterTableName: 'appointments_filters',
+  vendorCategoriesTableName: 'appointments_categories',
+  },
+```   
+
+While most data gets populated through user interactions, there are some initial setup steps required:
+
+## Creating Categories and Filters in Firestore
+
+### Option A: Using the Admin Interface
+If you're using our 3-in-1 variant of the booking app, you can add categories and filters directly through the admin interface.
+
+<div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+  <div style={{ flex: 1 }}>
+    ![](@site/static/img/Screen-Shot_1735118528-portrait.png)
+  </div>
+  <div style={{ flex: 1 }}>
+    ![](@site/static/img/Screen-Shot_1735137553-portrait.png)
+  </div>
+</div>
+
+### Option B: Manual Setup
+For manual setup, you'll need to populate the `appointments_categories` collection. Each category document should have the following fields:
+- `id`: Unique identifier
+- `order`: Display order
+- `photo`: Image URL
+- `title`: Category name
+
+![Category Structure Example](@site/static/img/Screen-Shot-2024-12-25-at-5.11.20-PM.png)
+
+![filter Structure Example](@site/static/img/Screen-Shot-2024-12-25-at-5.42.42-PM.png)
+
+
+### Option C: Automated Import
+To save time, you can import the provided `appointments_categories.json` file from the `DataSeed` folder. Follow our [data seeding guide](https://instaflutter.com/docs/tutorials/how-to-seed-data) for detailed instructions.
+
+## Vendor Setup
+
+> **Note**: If you're not using multi-vendor mode, set `isMultiVendorEnabled` to `false` in `AppConfig.js` and skip this section.
+
+For multi-vendor mode, you'll need to populate the `appointments_vendors` collection with your vendor data.
+
+### Adding Vendors
+
+#### Method 1: Using the Admin Interface
+1. Add vendors through the admin panel
+
+<img
+  src={require("@site/static/img/Screen-Shot_1735118536-portrait.png").default}
+  alt="Screenshot of the app"
+  style={{ width: "45%", height: "35%", display: "block", margin: "0 auto" }}
+/>
+
+2. Next have the vendor signup, afterwards the locate this user in the `users` collection, add the below fields to it:
+   - `role`: Set to "vendor" (string)
+   - `vendorID`: Link to the corresponding vendor document ID created. (string)
+
+
+
+#### Method 2: Manual Import
+Import the `appointments_vendors.json` file from the `DataSeed` folder using our [import guide](https://instamobile.io/docs/general-documentation/importing-data-seed-to-firestore/).
+
+
+
+### Vendor Document Structure
+![Vendor Structure](/../static/img/Screen-Shot-2024-12-25-at-12.41.25-PM.png)
+![Additional Fields](/../static/img/Screen-Shot-2024-12-25-at-12.42.04 PM.png)
+
+Required fields:
+- `id`
+- `photo`
+- `title`
+- `location`
+- `categoryID`
+
+### Adding Professional as vendor
+
+- After sucessfull login the vendor can search and add professionals that will be working under this vendor. 
+
+<img
+  src={require("@site/static/img/Screenshot_1735120422-portrait.png").default}
+  alt="Screenshot of the app"
+  style={{ width: "45%", height: "35%", display: "block", margin: "0 auto" }}
+/>
+
+## Professional Setup
+
+Now that categories and vendors are set up, you can start adding professionals to your app. Professionals are regular users, who can sign up, login and logout, so all their data gets stored into the same table as regular consumers: the users collection in Firestore. Once a professional creates an account, it will show up automatically in the `users` collection.
+
+### Setting Up a Professional Account
+
+1. Create a regular user account for the professional
+2. In Firestore, locate their document in the `users` collection
+3. Update the following fields:
+   - `role`: Set to "professional"
+    ![Professional Role](@site/static/img/Screen-Shot-2024-12-25-at-12.48.53-PM.png)
+4. Add mode-specific fields:
+   - For multi-vendor mode:
+     - Add `professionalVendorID`: ID of their associated vendor. (This can be done manually or the vendor manager can add a professional and this field is automatically added with the vendor's ID).
+   - For single-vendor mode:
+     - Add `professionalCategoryID`: ID of their service category
+   
+  
+
+
+5. The Professional can login and then head to `Account Details` to complete their profile. Afterward you should see this fields under the user document:
+   - `professionalSpecialty`: Their area of expertise
+   - `professionalSkills`: Array of skill objects, each containing:
+     - `displayName`: Skill name
+     - `id`: Unique identifier
+   
+<img
+  src={require("@site/static/img/Screenshot_1735120315-portrait.png").default}
+  alt="Screenshot of the app"
+  style={{ width: "45%", height: "35%", display: "block", margin: "0 auto" }}
+/>
+
+
+
+Your Booking App is now ready for both customer and professional use.

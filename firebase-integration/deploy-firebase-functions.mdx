@@ -1,0 +1,98 @@
+---
+title: "Deploy Firebase Functions"
+description: "Learn how to deploy Firebase Functions for your Instamobile app. Follow this guide to set up Node.js, initialize your project, add Instamobile functions, and deploy them to Firebase."
+keywords: ["deploy firebase functions", "firebase functions", "firebase integration", "instamobile", "node.js", "firebase cli", "cloud functions", "serverless framework"]
+---
+
+# Deploy Firebase Functions
+ 
+ __IMPORTANT: This section only applies to you if the purchased archive contains a “Firebase” or “FirebaseFunctions” folder inside of it. Please SKIP THIS SECTION entirely if you do not have a Firebase (or FirebaseFunctions) folder in your downloaded .zip__. Cloud Functions for Firebase is a serverless framework that lets you automatically run backend code in response to events triggered by Firebase features and HTTPS requests. At Instamobile, we use Firebase Functions to trigger specific actions upon user activity. A few examples:
+
++ When an user updates their profile photo, we trigger a Firebase Function to update all the places in the database where that user’s info is stored, so the profile picture gets updated properly on all surfaces (chat messages, feed posts, stories, etc)
++ When an user places a new order in the UberEats app, we trigger a Firebase Function (dispatch.js) that searches for an available driver to deliver that order
++ When a user unfriends another user, we trigger a Firebase Function (triggers.js) that removes all the feed posts, stories, chat channels, etc from one user’s timeline that are authored by the other user.
+  
+We’ve already coded all the necessary Firebase Functions, but you need to deploy these functions to your own Firebase account. __So basically, you need to upload the source code inside the FirebaseFunctions folder to your own Firebase account__. By now, we are going to assume you’ve already followed the previous sections in this documentation, on integrating Firebase:
+
++ __You already created a Firebase account, a Firebase project, and 2 apps inside that project (one for iOS and one for Android)__
++ __You were able to run the React Native project on your machine__  
+
+## 1. Set up Node.js and the Firebase CLI
+Firebase Functions source code is a Node.js project, so the code is basically JavaScript, similar to the React Native project. Nothing here is specific only to our templates, but everything applies to any Firebase project, so please use the official [Firebase documentation](https://firebase.google.com/docs/functions/get-started) if you encounter any issues.
+
+__1.1 Install Node__
+You’ll need a [Node.js](https://nodejs.org/en) environment to write functions, and you’ll need the Firebase CLI to deploy functions to the Cloud Functions runtime. For installing Node.js and [npm](https://www.npmjs.com/), [Node Version Manager](https://github.com/nvm-sh/nvm/blob/master/README.md) is recommended.
+
+__1.2 Install Firebase CLI__
+Once you have Node.js and npm installed, [install the Firebase CLI](https://firebase.google.com/docs/cli#setup_update_cli) via your preferred method. To install the CLI via npm, use:  
+
+```mdx  
+npm install -g firebase-tools  
+
+```  
+
+## 2. Initialize your project  
+
+When you initialize Firebase SDK for Cloud Functions, you create an empty project containing dependencies and some minimal sample code, using JavaScript for composing functions. To initialize your project:
+
+1. Run <span style={{color: 'red'}}>firebase login </span> to log in via the browser and authenticate the firebase tool.
+2. Create a new __“MyFirebaseFunctions”__ empty folder on your machine.
+3. In the Terminal, go to __MyFirebaseFunctions__ project directory.
+4. Run <span style={{color: 'red'}}>firebase init functions</span>. The tool gives you an option to install dependencies with npm. It is safe to decline if you want to manage dependencies in another way, though if you do decline you’ll need to run <span style={{color: 'red'}}>npm install</span> before emulating or deploying your functions.
+5. The tool gives you two options for language support:
+      + JavaScript
+      + TypeScript  
++ Please select __JavaScript__.
+
+After these commands complete successfully, your project structure looks like this:  
+
+```mdx 
+MyFirebaseFunctions
+ +- .firebaserc    # Hidden file that helps you quickly switch between
+ |                 # projects with `firebase use`
+ |
+ +- firebase.json  # Describes properties for your project
+ |
+ +- functions/     # Directory containing all your functions code
+      |
+      +- .eslintrc.json  # Optional file containing rules for JavaScript linting.
+      |
+      +- package.json  # npm package file describing your Cloud Functions code
+      |
+      +- index.js      # main source file for your Cloud Functions code
+      |
+      +- node_modules/ # directory where your dependencies (declared in
+                       # package.json) are installed 
+
+```   
+
+The <span style={{ color: 'red' }}>`package.json`</span> file created during initialization contains an important key: <span style={{ color: 'red' }}>`"engines": {"node": "12"}`</span>. This specifies your Node.js version for writing and deploying functions. 
+Please make sure this is version 12 for node.
+
+## 3. Add Instamobile Functions into Your Own Project 
+
+Since we already provided you with the full source code for your Firebase Functions, all you need to do is add that source code into your newly created __MyFirebaseFunctions__ project. To do this, you need to follow these steps:  
+      1. In __Instamobile’s__ FirebaseFunctions folder, copy the “functions” subfolder to clipboard.
+      2. Paste it in YOUR __MyFirebaseFunctions__ folder, to __OVERRIDE__ the __functions__ folder that is already there.  
+
+
+That’s it. You now have a Firebase Functions project, that is linked to __your Firebase account__, and that uses __our source code__ (so our Firebase Functions that work with the mobile app).
+
+## 4. Deploy Your Firebase Functions to Firebase  
+
+To deploy Firebase Functions, __you need to make sure you upgrade your Firebase Pricing Plan to Blaze__.
+
+In your project directory, simply run this command: 
+
+```mdx 
+firebase deploy --only functions  
+
+```  
+Do not worry if you see any warnings, they do not affect the behavior of the app. Once the deploy is complete, the output in the Terminal should look like this: 
+
+Now that the functions have been deployed, you can go to your Firebase Console and check them out there. You can see the logs for each function, to understand when it gets called and what the output of running them is.firebase functions console 
+
+## 5. Watch Your Firebase Functions for Errors 
+For some Firebase functions, you need to create indexes on certain Firestore collections, in order for them to run properly. For this, start using the app (e.g. change a profile picture for a user), and watch the logs for the Firebase Functions in the console. If you get an error related to a missing index, simply click on the URL of that error, and the index will get created automatically. You do not need to deploy your functions again, after an index gets created, but make sure you wait until the index is indeed created, before testing the app again.
+
+

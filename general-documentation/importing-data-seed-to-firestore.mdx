@@ -1,0 +1,33 @@
+---
+title: "Importing Data Seed to Firestore: A Step-by-Step Guide"
+description: "Learn how to import data seed to Firestore automatically to save time during setup. Follow these steps to quickly import JSON files into your Firebase Firestore."
+keywords: ["import data seed", "Firestore", "Firebase", "JSON files", "automatic import", "data seed setup", "Firebase Firestore import", "Firestore data import"]
+---
+
+# Importing Data Seed to Firestore 
+
+If you purchased a product which has a DataSeed folder included in the archive, it means you can automatically import the .json files included in it into your own Firebase Firestore, to save time during setup (as the alternative is to manually add each item, with all its fields). Among the main products which include Data Seed we can list:
+
++ Store Locator App
++ Universal Listings App
++ Real Estate App
++ UberEats Clone 
++ Restaurant App Template
++ Appointments App  
+
+You can import all of our test data into your own Firebase automatically. __This would save you a lot of time__, since you don’t need to add each entity manually. You can edit the fields later, to add your own photos, names, locations, etc.
+
+1. Locate DataSeed folder included in your download
+2. Clone this [Github repo](https://github.com/dalenguyen/firestore-import-export) (this is a script that lets you import and export json data into Firestore)
+3 In __Firebase Console__ -> __Project Settings__ -> __Service Accounts__ -> __Generate a Node Private Key__ -> __Download__ it -> Rename it to “__serviceAccountKey.json__” and place it into the __firestore-import-export__ folder 
+
+![](/../static/img/Screen-Shot-2020-08-16-at-11.15.42-AM.png)
+
+4. Place all the .json data seed files into the __firestore-import-export__ folder (these are the files included in the downloaded archive, under the DataSeed folder)
+5. Within the firestore-import-export folder, run the following three command for each of the .json files: 
+```mdx
+node import.js name_of_json_file.json
+```  
+This will create a new Firestore table for each of the .json files included in the data seed. Running this script will also populate the table with all the items and their correct fields. That’s it. Now all the data is there, and your app should be usable. Re-run the React Native mobile app, and make sure that all the mock data is there. To add your own data, simply open the json files from DataSeed and modify them directly, with your own photo URLs, titles, descriptions, locations, etc. Make sure you copy the files again into the script folder, and re-run the script on all the files, every time you want to modify something. You can also directly modify this data into Firebase Console. Take a look at the Firestore structure in your Firebase Console, and make sure it looks like this:
+ 
+ ![](/../static/img/Screen-Shot-2020-08-16-at-11.11.07-AM-1024x488.png)

@@ -1,0 +1,100 @@
+---
+title: "In-App Purchases Guide"
+description: "Learn how to manage In-App purchases for iOS and Android using the react-native-iap library. This guide covers configuration for App Store Connect and Google Play Console."
+keywords: ["in-app purchases", "react-native-iap", "ios", "android", "app store connect", "google play console", "subscription", "iap"]
+---
+
+# In-App Purchases  
+  
+We have managed In-App purchases for iOS and Android with “react-native-iap” library. This library enables us to manage In-App purchases smoothly for both Android and iOS.
+
+## Configuring IAPs For iOS on App Store Connect.
+To accept auto-renew subscriptions in ur app first, you have to log in to App Store Connect  -> __Agreements, Tax and Banking__  
+
+![](/../static/img/1_i4TrleXTX-n-VzrVeLgTlQ.png)  
+
+Then accept all the Paid Apps Agreements and you will see something like this:  
+
+![](/../static/img/1_mUCqCuMdxrPItyLbKv8LPw.png)  
+
+If the agreements have not been accepted you can’t see the option to create the __AutoRenew__ subscription.
+
+__Create the subscriptions__
+
+ + Within App Store Connect, click __Apps__, followed by the App you wish to add in-app purchases to.
+ + You should find __In-App Purchases__ at the left side of your page, amongst the tabs.
+ + Under __In-App Purchases__, click __Manage__.
+Here, we can add subscriptions as well as a “billing grace period” feature that postpones ending a subscription until a certain period of time passes after a subscription expires.
+
+Click the __+++ icon next to your __In-App Purchases__ subheading to add an IAP, and follow the two-step process of choosing its type, followed by its name and reference number:  
+
+![](/../static/img/1_Kx8Jhrfu2H7VN_qdlPQMzg.jpg)
+   
+ Your __Reference Name__ should be a readable and easily recognizable label for the subscription item, whereas the __Product ID__ needs to be a unique identifier for the item.
+
+If you host many apps, using the com.org.app.iapId may be a more manageable Product ID convention, ensuring that there are no overlapping values between apps.
+
+From here you can jump into each of your purchase items and configure a range of metadata — here are some of the more interesting features you can configure:
+
++ Subscription pricing, with a toggle to automatically generate prices for every supported currency. This is extremely useful for displaying prices in-app.
++ Promotional offers and introductory offers to spur new customers. Specific start and end dates can be set (or even no end date for an ongoing promotion), as well as a specific payment type.
+  
+  Be sure to check out all the options available for your In-App Purchase item to further tailor your offer.
+
+Later on, we will fetch the configured IAPs further down and use in our project.
+
+__Create a sandbox test user__
+
++ Still in App Store Connect  -> __My Apps__ -> __Users and Access__.
++ On the __Users and Access__ page, you should find __Sanbox__ on the left tab. 
+
+![](/../static/img/Screenshot-2020-07-13-at-5.24.34-PM-1024x572.png)  
+
++ create a Tester account that will later be used to test IAPs on your app. 
+
+## Configuring IAPs for Android on Google Play Console  
+
+![](/../static/img/1_5AbK4gf2ULbV3wAAFEj7dg.png)   
+
+1. As described in the above screenshot, you need to __upload an APK__ and __set up a merchant account__ before creating an In-app product.
+2. If you’ve done it, you can create a managed product or subscribe products as shown in below screenshot.  
+
+![](/../static/img/1_Qg2nDWuzYzHblh4m8bSMzg.png)  
+
+## Flow Overview   
+
++ Using ‘__react-native-iap__”  library, we fetch subscription details with the previously configured subscription __SKUs__ for different platforms.
++ We display on the screen, the localized price and title of the subscription detail.
++ The user selects a subscription plan and completes a purchase.
++ The Subscription plan is immediately active and auto-renewable.
++ To cancel a plan, The user will have to go to the phone App settings and log in to the services provider
++ Select subscriptions and find the list of subscriptions available. 
+
+### Codebase  
+
+All the code related to In-App purchases lives in __src/Core/inAppPurchase__. Among the most important classes, we can list:
+
++ __IMSubScriptionScreen__
+     + This is a component for display.
+     + Here, we have the UI for the subscription screen.
+     + It also starts a subscription purchase when we press the Purchase button in the UI.
++ __IAPManagerWrapped__
+     + This returns a context that wraps the main App.
+     + It also manages the logic for completing a purchase.
+     + It manages the logic for checking and getting a subscription plan a device.
+     + It also loads active subscription plan from the Firebase Firestore in case we have an active subscription but we are logged in on a different device with no subscription plan.
+     + It also validates IOS transaction receipts.  
+
+___Validating IOS Transaction Receipts__. To validate a transaction receipt on IOS, you will need to generate an ___App-Specific Shared Secret__
+
+In the Features screen of [App Store Connect](https://appstoreconnect.apple.com/login) app, we can see a link
+
+__App-Specific Shared Secret__
+
+Click on it and generate a new App Secret. This app secret is necessary to validate a transaction receipt.
+
+enter the generated shared secret in __src/DatingConfig.js__  
+```mdx 
+IAP_SHARED_SECRET: 'enter_shared_secret_here',
+```
+

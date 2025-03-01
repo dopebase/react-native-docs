@@ -1,0 +1,38 @@
+---
+title: "Link Stripe Account to React Native"
+description: "Learn how to link your Stripe account to a React Native app by updating the configuration with your own server and Stripe credentials."
+keywords: ["stripe", "react native", "link stripe account", "stripe payments", "react native payments", "stripe configuration"]
+---
+
+# Link Stripe Account to React Native
+Now that you have a Stripe account and you’ve deployed your payments server, it’s time to modify the app so that it points to your own server, rather than our test Stripe account.
+
+Open __src/ShopertinoConfig.js__ (or __VendorAppConfig.js__, depending on what template you work with) and locate the Stripe config sections:  
+
+```mdx   
+stripe_ENV: {
+    API: {
+      baseURL: 'https://murmuring-caverns-94283.herokuapp.com/', //your copied heroku link
+      timeout: 9000,
+    },
+},
+...
+STRIPE_CONFIG: {
+  PUBLISHABLE_KEY: 'pk_test_LSo5mTIQqkRiTWd0eBM', // "pk_test_..." in test mode and ""pk_live_..."" in live mode
+  MERCHANT_ID: 'Your_merchant_id_goes_here',
+  ANDROID_PAYMENT_MODE: 'test', // test || production
+},  
+```  
+
+Update:
+
++ the __baseURL__ with the Heroku URL that you got in the previous section
++ __PUBLISHABLE_KEY__ with the publishable key that you got from the Stripe dashboard.  
+
+This is all you need. Your app now supports payments with Stripe. Place an order and check out the transaction in your own Stripe dashboard.
+You can use this test credit card, if you want to simply test the app, without getting charged:
+
+number 4242 4242 4242 4242  
+exp date: 03/28  
+ccv: 123
+

@@ -1,0 +1,150 @@
+---
+title: "Admin and Restaurant Owner App - UberEats Clone"
+description: "Learn how to set up and configure the Admin and Restaurant Owner App for the UberEats Clone. Follow the steps to manage restaurants and process orders efficiently."
+keywords: ["admin app", "restaurant owner app", "ubereats clone", "react native", "firebase", "restaurant management"]
+---
+
+import Note from "@theme/Admonition";
+import Admonition from "@theme/Admonition";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Admin and Restaurant Owner App
+
+<Admonition type="info">
+  The Admin App allows an admin to oversee and control the different
+  restaurants. The Restaurant Owner App empowers restaurant managers to manage
+  their products and process incoming orders efficiently . While the default
+  experience focuses on customers, you can easily switch to the restaurant
+  management interface by following this guide.
+</Admonition>
+
+## Configuration Steps
+
+### Setting Up the Admin Restaurant Owner Role
+
+<Tabs>
+<TabItem value="step1" label="Step 1" default>
+    Admin should signup and will be greeted with the customer view. Then head to the `users` collection in the firestore database to find the newly added user. You need to add to the field:
+   - role : "admin" (string)
+   Login and you should be able to see the features of the admin that mainly include ability to add Vendors (Restaurant).
+  </TabItem>
+  <TabItem value="step2" label="Step 2" default>
+    Admin should login and add the vendor. Then head to the `vendor` collection in the firestore database to find the newly added vendor. Save this document ID.
+    <img
+  src={
+    require("/../static/img/Screenshot_1733830727-portrait.png")
+      .default
+  }
+  alt="Screenshot of the app"
+  style={{ width: "35%", height: "25%", display: "block", margin: "0 auto" }}
+/>
+  </TabItem>
+  <TabItem value="step3" label="Step 3">
+   Have the restaurant owner sign up in the app - should see the default customer view. Head to firestore `user` collection to locate the restaurant owner that has just signed up. You need to add to these fields.
+   - role : "vendor" (string)
+   - vendorID: "_value from Step 1_"
+   ![](/../static/img/annotely_image.jpeg)
+
+Great now when the Restaurant owner logs in, they will be able to manage the products and orders of their restaurant efficiently.
+
+  </TabItem>
+</Tabs>
+
+## Code Implementation
+
+<Admonition type="note">
+  The app automatically determines the appropriate navigation stack based on
+  user roles. If you want to change or modify the features assigned to the roles
+  to your likings. Go ahead to file `AppNavigation.js` inside _src/navigations_,
+  and `consumerAppConfig.js` inside _src/config_.
+</Admonition>
+
+```js
+{
+  currentUser?.role === "vendor" ? (
+    <RootStack.Screen
+      options={{ headerShown: false }}
+      name="MainStack"
+      component={VendorDrawerStack}
+    />
+  ) : currentUser?.role === "driver" ? (
+    <RootStack.Screen
+      options={{ headerShown: false }}
+      name="MainStack"
+      component={DriverDrawerStack}
+    />
+  ) : currentUser?.role === "admin" ? (
+    <RootStack.Screen
+      options={{ headerShown: false }}
+      name="AdminStack"
+      component={AdminDrawerStack}
+    />
+  ) : (
+    <RootStack.Screen
+      options={{ headerShown: false }}
+      name="MainStack"
+      component={DrawerStack}
+    />
+  );
+}
+```
+
+<!-- # Restaurant Owner App
+
+When you run the app in the original unmodified version of our UberEats React Native clone, you’ll notice that the user experience is that of your customers – they can view restaurants, food items and place orders. Our UberEats Clone also includes the Restaurant Owner App, which allows the restaurant managers to process orders that are coming into their restaurants via the app.
+
+To build and run the Restaurant Manager navigation stack, you need to configure the user role in Firestore, by setting up the __role__ as “__vendor__” (string type). So go to __Firestore__, select the “__users__” collection, find the user that you want to set as a restaurant manager, and add a field named “__role__” (with value “__vendor__“):
+
+![](/../static/img/Screen-Shot-2021-05-19-at-7.31.23-AM.png)
+
+Now re-run the app, and you’ll notice you get the restaurant owner experience. Log into the app with a restaurant owner (so an account that has the __vendorID__ field set in the users table, per [the documentation here](/docs/apps/uberEats-clone/setting-up-firebase-tables)), and you’ll be starting to get order history for that restaurant.
+
+__Note__: When building the restaurant app with the change above, you’ll notice that the customer app will get overridden on your device by the restaurant app. This is because you are using the same Bundle ID (app identifier) for both apps.
+
+__To create a completely separate/different app, you’ll need to do the following steps:__
+
+1. Clone the Project, by copy-pasting a duplicate folder of the source code
+
+2. Rename that folder to RestaurantApp and re-configure RestaurantApp as pictured below
+
+3. Set up a new app in Firebase (one for iOS and one for Android), with a different __BundleID__ for iOS (e.g. io.instamobile.restaurant.app.ios) and different __applicationId__ for Android (e.g. io.instamobile.restaurant.app.android). __DO NOT change the package name!__
+
+4. Set up Firebase on this new folder by following [all the steps here](/docs/firebase-integration) (basically override the new __GoogleService-Info.plist__ and __google-services.json__ files)
+
+5. Make sure you modify the __Bundle ID__ and the __applicationId__ in RestaurantApp (make sure these IDs match the Firebase app IDs you created at step 3)
+
+6. Customize RestaurantApp, by changing name, logo, splash screens, etc. [See this documentation](/docs/customization) on how to achieve these things, if you don’t know React Native
+
+7. Build and run the app (RestaurantApp) – now you’ll notice this will create a new app on your device, leaving the customer app untouched, so you can start using both apps at the same time.
+
+## Code Pointers
+The app selects the correct navigation stack automatically (driver, restaurant manager, consumer or admin), based on the user’s role. This happens in __AppNavigation.js__:
+
+```mdx
+{currentUser?.role === 'vendor' ? (
+  <RootStack.Screen
+    options={{ headerShown: false }}
+    name="MainStack"
+    component={VendorDrawerStack}
+  />
+) : currentUser?.role === 'driver' ? (
+  <RootStack.Screen
+    options={{ headerShown: false }}
+    name="MainStack"
+    component={DriverDrawerStack}
+  />
+) : currentUser?.role === 'admin' ? (
+  <RootStack.Screen
+    options={{ headerShown: false }}
+    name="MainStack"
+    component={AdminDrawerStack}
+  />
+) : (
+  <RootStack.Screen
+    options={{ headerShown: false }}
+    name="MainStack"
+    component={DrawerStack}
+  />
+)}
+``` -->

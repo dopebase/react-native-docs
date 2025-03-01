@@ -1,0 +1,68 @@
+---
+title: "Chat Module Documentation"
+description: "Learn how to integrate and use the chat module in your React Native app. This guide covers the main components, Firebase interactions, and how to add chat functionality to your existing app."
+keywords: ["chat module", "react native", "firebase", "chat integration", "group chat", "chat functionality"]
+---
+
+# Chat
+
+Our chat module, which lives in __src/Core/chat__  contains the entire chatting functionality, including groups. Being properly modularized, the chat codebase can easily be integrated into any existing React Native app, with only a few lines of code. The main components of the Chat screen are:
+
++ __IMChatScreen__  
+    + This is the React Native component that handles the core chat room and its functionality.
+    + It can be used for both 1-1 chat rooms as well as group chats
+    + It only needs a channel ID in its props, and it will automatically pull the proper conversation messages
+    + It communicates with Firebase, via the __channelManager__ and __firebaseStorage__ objects
+    + __sendMessage()__ is one of the most important methods, which is in charge of sending a message
+    + It sends a push notification too all recipients, when a message is being sent, using the __notificationManager__
+    + For apps that have audio and video calling integration, the call is being initiated in this component too
+    + It looks like this:   
+
+![](/../static/img/Simulator-Screen-Shot-iPhone-11-Pro-Max-2020-02-01-at-17.11.52-473x1024.png)  
+
+     + __IMConversationListView__
+          + This is a React Native component that automatically displays the list of all the conversations of the current user
+          + It only needs a user ID in its props or redux binding
+     + __IMCreateGroupScreen__
+          + This is the screen that lets you select multiple friends to create a group chat
+          + It depends on an existing __friends__ reducer (from Core/socialgraph module) to fetch the list of friends
+     + _chat reducer_
+          + This reducer should be hooked into any app that’s using our chat functionality.
+          +  It’s in charge of storing and observing the list of conversations the current user is involved in
+     + Firebase interactions
+          + The components interacting with Firebase live in __chat/firebase__
+          + They are in charge of fetching the conversations (__channelsTracker.js__) and uploading photos and messages (channelManager from __channel.js__)
+   
+   ## Adding Chat into an Existing React Native App  
+
+ 1. If your app is not using Firebase already, you’ll need to link the app to your Firebase server first. This is pretty straightforward, and you can follow our [detailed guide](https://instamobile.io/mobile-development/react-native-chat/) on how to achieve this.
+ 2. Add __Core/chat__ folder into your own source code
+ 3. To navigate to a chat screen, use this code snippet:  
+
+```mdx 
+import { IMChatScreen } from '../Core/chat';
+...
+const id1 = "1234";
+const id2 = "5678";
+const otherUsers = [
+   {
+       id: id1 < id2 ? id1 + id2 : id2 + id1,
+       firstName: "Andrew"
+   }
+];
+const channel = {
+    id: id1 + id2,
+    participants: otherUsers,
+};
+props.navigation.navigate('ChatScreen', {
+    channel,
+    appStyles: AppStyles,
+    ```  
+
+    ## Changing the Backend  
+
+By default, our chat is using Firebase as its datastore for the messages and conversations. Some customers prefer to create their own backend, so we made that possible by abstracting out the server interaction code into its own components. In order to port our chat module to your own backend, all you need to do is reimplement the methods that interact with the server, such as:
+
+     + the methods in __Core/chat/firebase/channel.js__ (sendMessage, createChannel, onRenameGroup, etc)
+     + the methods in __Core/firebase/user.js__ (getUserData)
+     + the markAbuse method in __Core/user-reporting/firebase.js__ (used for blocking users, a feature required by Apple)

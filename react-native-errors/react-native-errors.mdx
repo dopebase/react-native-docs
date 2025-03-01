@@ -1,0 +1,127 @@
+---
+title: "React Native Errors and Solutions"
+description: "Comprehensive guide to troubleshooting common React Native errors and their solutions."
+keywords: ["react native errors", "react native troubleshooting", "react native solutions", "react native common issues", "react native debugging"]
+---
+
+# React Native Errors  
+ 
+## 1. Error: Activity class `{com.appname/com.appname.MainActivity}` does not exist.  
+
+Despite the message, this is in fact __not an error__. As long as you got the successful green message “BUILD SUCCESSFUL” (see image below), you can manually open the app on the device/emulator on which you built the project. Just find the app icon and tap on it. That will open the app. 
+
+![](/../static/img/Screen-Shot-2020-02-29-at-1.51.42-PM.png) 
+
+## 2. No bundle URL present 
+
+![](/../static/img/Screen-Shot-2020-03-28-at-10.40.05-AM.png)  
+
+If you’re getting this error, it means your packager server didn’t start. You’ll have to start it manually by running  
+
+```mdx  
+ 
+npm start -- --reset-cache
+```  
+
+Once the metro bundler started, simply reload the project.  
+
+
+## 3. Error: Could not find or load main class org.gradle.wrapper.GradleWrapperMain 
+
+If you’re running into this issue, it’s because you’re missing this file: __android/gradle/wrapper/gradle-wrapper.jar__ . You can generate this binary by simply running   
+
+```mdx  
+
+gradle wrapper
+```  
+in the project’s __android__ folder. If you don’t have gradle installed, follow gradle [documentation](https://gradle.org/install/) on how to install it (or just run “brew install gradle” on MacOS).
+  
+
+## 4. SDK Location not found  
+
+If you’re running into this issue when building a React Native mobile app on Android, it’s because your Android SDK path is broken or it doesn’t exist. Open your __~/.bash_profile__, and add the following lines at the beginning:  
+
+```mdx  
+
+export ANDROID_HOME=~/Library/Android/sdk/
+export PATH=~/Library/Android/sdk/tools:$PATH
+export PATH=~/Library/Android/sdk/platform-tools:$PATH
+```
+Now load the new ~/.bash_profile in your Terminal (restart the Terminal or run “__source ~/.bash_profile__“), and re-run the Android app.
+
+## 5. App gets stuck on the splash screen  
+
+If you are able to successfully build the project, but the app stays blocked on the splash screen (also known as the launch screen), this usually means you didn’t start the metro bundler in the correct folder or under the right React Native version. To start the metro bundler in the correct folder, please make sure you locate the project folder in the Terminal and run  
+
+```mdx  
+
+npm start -- --reset-cache
+```  
+This is usually enough to fix the error. Reload the app and see if it works. If it’s still not working, then do a full wipe out by running:  
+
+```mdx   
+
+watchman watch-del-all && rm -f yarn.lock && rm -rf node_modules && yarn && yarn start -- --reset-cache
+```  
+Once the metro bundler started, you can simply re-build the project again (in Xcode for iOS, or react-native run-android for Android), and you’ll see the packager loading the JS code as follows:  
+
+![](/../static/img/Screen-Shot-2020-02-27-at-11.56.47-AM.png)  
+
+## 6. Keystore file ‘…android/app/debug.keystore’ not found for signing config ‘debug’.  
+
+You can fix this error by simply running the following command in your __android/app__ folder and typing in all the requested information:  
+
+```mdx   
+
+credential = [FIROAuthProvider credentialWithProviderID:@"apple.com" IDToken:authToken rawNonce:authTokenSecret];
+```  
+        to   
+
+```mdx   
+
+credential = [FIROAuthProvider credentialWithProviderID:@"apple.com" IDToken:authToken accessToken:authTokenSecret];
+```   
+Now re-run the Xcode project and you’ll notice the error went away.  
+
+![](/../static/img/Screen-Shot-2020-04-02-at-1.36.40-PM.png)  
+
+## 8. warn Failed to connect to development server using “adb reverse”: spawnSync adb ENOENT  
+
+This is just an warning, and it means the build was successful, but it couldn’t open the app. Check out the app on your emulator / android device, and simply open it manually.
+
+## 9. React Native Version Mismatch  
+
+This usually means that you opened the metro bundler in a different project. In 99% of the cases, running the following command in the correct folder will fix the error: 
+
+```mdx  
+
+npm start -- --reset-cache
+```  
+If this doesn’t work, try running  
+
+```mdx  
+
+react-native bundle --platform android --dev false --entry-file index.js --bundle-output 
+android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+``` 
+and rebuild the project. You can also try running  
+
+```mdx  
+
+adb reverse tcp:8081 tcp:8081
+```  
+
+which sometimes helps too. If nothing worked, try restarting your computer.
+
+## 10. Error: Firestore: Operation was rejected because the system is not in a state required for the operation`s execution. (firestore/failed-precondition)”  
+
+This error shows up when first running our apps that have more complex performance improvements. You need to create the proper indices in your Firestore tables, used for loading data much faster. We do console.log these errors, so simply look into the console for a custom Firebase URL that looks like this (“The query requires an index. You can create it here: “):  
+
+![](/../static/img/index2.png)  
+
+Clicking on that URL will automatically land you in the Firebase UI for creating that index:  
+
+![](/../static/img/index1.png)  
+
+Simply click the “Create Index” button, and wait for the index to be created before running your app again. You’ll notice the error will disappear as soon as the index is created. Alternatively, you can also create the index manually, in the Firebase Console UI (Firestore -> Indexes)
+

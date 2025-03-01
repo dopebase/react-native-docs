@@ -1,0 +1,48 @@
+---
+title: "Setting Up Firebase Table and Configure App for Real Estate App"
+description: "Learn how to set up Firebase collections and configure your real estate app to use Firebase as the backend. Follow our step-by-step guide to import data and display listings."
+keywords: ["firebase", "real estate app", "react native", "firebase collections", "firebase setup", "data seeding", "configure app"]
+---
+
+# Setting Up Firebase Collections
+
+As you already know, our React Native apps are using Firebase as the default backend. The app fetches and writes data from and to Firebase Firestore. Firestore is the database, containing several collections to structure all the data needed for the real estate app, such as listing, categories, filters, etc. In **src/config/index.js**. You can find the names of the UberEats firebase collections:
+
+```js
+ serverConfig: {
+      collections: {
+        listings: 'real_estate_listings',
+        savedListings: 'real_estate_saved_listings',
+        categories: 'real_estate_categories',
+        filters: 'real_estate_filters',
+        reviews: 'real_estate_reviews',
+      },
+    },
+```
+
+
+:::important
+You can rename these tables as you wish, but make sure you properly replace all the occurrences in the source code, otherwise your app will break.
+:::
+
+## Importing Restaurant Data Seed Automatically
+
+You can import all of our test restaurant data into your own Firebase automatically. **This would save you a lot of time**, since you don’t need to add each entity manually. You can edit the fields later, to add your own photos, names, locations, etc. Go ahead to [How to seed your firebase with our data](https://instaflutter.com/docs/tutorials/how-to-seed-data) too see all the step by step guide you need to set it up.
+
+
+## Listings to be displayed in the home content
+
+After adding your category to Firebase (via the admin panel, data seeding, or manual entry), navigate to the `real_estate_categories` collection in the Firestore database. Select the category you want to display on the user’s home screen and copy the values shown here
+
+![](/../static/img/annotely_image_14.png)  
+
+Next, update the configuration in src/config/index.js with the copied value:
+```js
+homeConfig: {
+    mainCategoryID: 'aaPdF5Dskd3DrHMWV3SwLs',
+    mainCategoryName: 'Houses',
+},
+```
+
+
+

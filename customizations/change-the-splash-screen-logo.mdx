@@ -1,0 +1,23 @@
+---
+title: "Change the Splash Screen Logo"
+description: "Learn how to change the splash screen logo for both iOS and Android in your React Native app to improve startup performance."
+keywords: ["change splash screen logo", "ios splash screen", "android splash screen", "react native splash screen", "customize splash screen"]
+---
+
+# Change the splash screen logo  
+
+### iOS  
+
+To change the splash screen on iOS, you need to open the native project in Xcode (the __.xcworkspace__ file from the ios/ folder) and locate the __LaunchScreen.xib__ file. You can then drag and drop views, change images & texts, and add constraints into the Interface Builder. Check out this step-by-step tutorial in case you are not familiar with Xcode’s interface builder.  
+
+![](/../static/img/Screen-Shot-2020-07-10-at-9.11.54-AM-1024x450.png)  
+
+__Note__: The reason why this has been done natively is performance. Any JavaScript library managing the splash screen creates a ton of latency at app start up, which would have been a poor user experience.
+
+### Android  
+
+Similarly, changing the splash screen in Android is done natively to boost startup performance tremendously. To change the splash screen of our React Native templates, locate the __android/app/src/main/res/launch_screen.xml__ and make changes there. You can open the android project in Android Studio, if you want to use the interface builder (drag-and-drop) to make visual changes to the launch screen.  
+
+![](/../static/img/Screen-Shot-2020-07-10-at-9.17.45-AM.png)   
+
+Check out this detailed [tutorial](https://medium.com/handlebar-labs/how-to-add-a-splash-screen-to-a-react-native-app-ios-and-android-30a3cec835ae) in case you are not familiar with Android’s layout system.

@@ -1,0 +1,39 @@
+---
+title: "Setting Up Push Notifications"
+description: "Learn how to set up push notifications in your React Native app using Firebase. Follow our step-by-step guide to configure push notifications for both iOS and Android devices."
+keywords: ["push notifications", "firebase", "react native", "ios", "android", "setup guide", "notificationManager"]
+---
+
+# Setting Up Push Notifications  
+
+The app is using Google Cloud Messaging (within Firebase) to send push notifications to both iOS and Android devices. Push notifications are enabled by default in all of our React Native templates. However, they are set up to work with our staging Firebase project, so you’ll need to switch to your own project, similar to how you’ve done it for Firestore.
+
+## Setting Up Push Notifications with Your Own Firebase 
+
+
+To set them up with your own Firebase, all you need to do is to replace the Server Key of the notificationManager.js file with your own. 1. In __Firebase__, go to __Project Settings__ -> __Cloud Messaging__ and copy the __Server Key__ to clipboard  
+
+![](/../static/img/Screen-Shot-2020-03-12-at-11.39.44-AM.png)  
+ 
+
+ 2. In the __1source code__, go to __Core/notifications/firebase__ and replace the Server Key (firebaseServerKey variable) with your own:
+```mdx 
+
+const firebaseServerKey = "YOUR_KEY_HERE";
+```
+Here’s an example of how the updated server key should look like: 
+
+![](/../static/img/Screen-Shot-2020-03-12-at-11.48.40-AM.png)  
+That’s all you need to set up for Android. Push notifications should now work properly (make sure you re-build and re-run your app after making this change).
+
+## Code Documentation  
+
+The main component that handles sending push notifications is __notificationManager__, which resides at Core/notifications/notificationManager.js. All notifications are being sent through the __sendPushNotification__ method.  
+
+```mdx 
+const sendPushNotification = async (toUser, title, body, type, metadata = {})
+```
+
+To identify all the places that trigger push notifications, simply search for this method in the project. 
+
+![](/../static/img/Screen-Shot-2020-03-12-at-11.52.28-AM.png)  

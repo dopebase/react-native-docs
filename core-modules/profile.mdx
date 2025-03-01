@@ -1,0 +1,100 @@
+---
+title: "Profile Module Documentation"
+description: "Learn about the Profile module in our React Native template, including the IMFormComponent and how to customize profile, settings, and contact us screens."
+keywords: ["profile module", "react native", "IMFormComponent", "user settings", "customize profile", "settings screen", "contact us screen"]
+---
+
+# Profile
+  
+__Core/Profile__ is a module containing most of the logic behind the user settings screens. These are screens that are common to any mobile app, such as:
+
++ Account Details screen __IMEditProfileScreen__
++ Settings screen __IMUserSettingsScreen__
++ Contact us screen __IMContactUsScreen__
+One of the most important components that all these screens rely on is __IMFormComponent__, which is a generic React Native UI component, that lives in Core/profile/ui and which has the functionality of rendering advanced forms.
+
+## Forms 
+
+As mentioned below, __IMFormComponent__ is a custom UI component that is capable of rendering a complex form, where all its fields are passed in as a config object in its props. It has support for rendering:
+
++ text fields
++ button fields
++ select fields
++ switch fields  
+
+It also communicates back all the actions taken by the user, via two methods:
+     + onFormButtonPress – this is called when a button field is pressed
+     + onFormChange – this is called when any of the __form__ fields changes its value (text, switch, etc)  
+
+The main important property of the IMFormComponent is its form parameter, which stores the state of the form. Here’s an example of how the form parameter looks like for our Account Details screen:  
+
+```mdx  
+form: {
+   sections: [
+     {
+       title: IMLocalized("PUBLIC PROFILE"),
+       fields: [
+         {
+           displayName: IMLocalized("First Name"),
+           type: 'text',
+           editable: true,
+           regex: regexForNames,
+           key: 'firstName',
+           placeholder: 'Your first name'
+         },
+         {
+           displayName: IMLocalized("Last Name"),
+           type: 'text',
+           editable: true,
+           regex: regexForNames,
+           key: 'lastName',
+           placeholder: 'Your last name'
+         }
+       ]
+     },
+     {
+       title: IMLocalized("PRIVATE DETAILS"),
+       fields: [
+         {
+           displayName: IMLocalized("E-mail Address"),
+           type: 'text',
+           editable: false,
+           key: 'email',
+           placeholder: 'Your email address'
+         },
+         {
+           displayName: IMLocalized("Phone Number"),
+           type: 'text',
+           editable: true,
+           regex: regexForPhoneNumber,
+           key: 'phone',
+           placeholder: 'Your phone number'
+         }
+       ]
+     }
+   ]
+ }  
+ ```  
+ By passing this config object as the form prop into the IMFormComponent, a beautiful native form will be rendered properly. As you can see, the form config is made up of:
+
++ an array of sections
++ each section, contains 
+         + title
+         + array of fields
++ each field contains a few parameters describing the field
+         + type
+         + displayName
+         + regex (this is optional and used for form validation)
+         + key (a unique identifier useful in processing the form)
+         + placeholder (optional – useful for fields such as a textfield)  
+
+## Changing Profile Fields  
+
+We made it easy to customize all the fields that are required by your app for the profile, settings and contact us default screens. If you open the main config.js file of your premium React Native template, you’ll notice the following three fields:  
+
+```mdx 
+editProfileFields: {...}
+userSettingsFields: {...}
+contactUsFields: {...}  
+```
+You can simply edit these fields and sections to add, remove, and edit any form fields that you want. The changes will automatically be reflected in the 3 screens on the profile flow.

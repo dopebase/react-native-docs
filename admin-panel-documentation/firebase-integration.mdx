@@ -1,0 +1,47 @@
+---
+title: "Firebase Integration for Admin Panel"
+description: "Learn how to integrate Firebase with your admin panel by updating the database configuration."
+keywords: ["firebase integration", "admin panel", "database configuration", "firebase setup", "firebase admin panel"]
+---
+
+# Firebase Integration
+
+In this section we will show you how you can update your admin panel to use your own database.
+
+We start by going to the [firebase console](https://console.firebase.google.com/) and to your project, then go to __Project settings__ -> __Service accounts__, and now click Generate new private key. This will generate a new JSON file that contains your private key. 
+
+![](/../static/img/firebaseGenerateKey-1024x511.png) 
+
+Next you have to do is to go into the admin panel’s folder and go to /db/firebaseDB and remove the .json file and replace it with your own file that you got from the last step.
+
+Lastly you have to __edit index.js__ that is found in the same folder, in db/firebaseDB and change the highlighted lines of code. 
+ 
+![](/../static/img/firebaseIndexFile.png) 
+
+Change the first line of code
+
+```mdx 
+    const serviceAccount = require("./production-a9404-firebase-adminsdk-nin6u-d632b424d4.json");
+``` 
+
+to:
+
+```mdx 
+const serviceAccount = require("./Your-Private-Key-File-You-Received.json");
+```
+
+And then get your link from where you generated the key and change the second line of code
+
+```mdx
+const dbURL = "https://production-a9404.firebaseio.com";
+```
+
+to:
+
+```mdx 
+const dbURL = "Your-Link";
+``` 
+
+![](/../static/img/firebaseGenerateLink-1024x515.png)  
+
+Now you can just start your admin panel, and start editing your own database!

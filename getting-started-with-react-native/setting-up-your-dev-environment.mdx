@@ -1,0 +1,43 @@
+---
+title: "Setting Up Your Dev Environment for React Native"
+description: "Learn how to configure your React Native development environment with this step-by-step guide. Follow the instructions to install necessary tools and set up your environment for both Android and iOS development."
+keywords: ["react native", "dev environment", "setup", "android", "ios", "development tools", "react native cli", "visual studio code", "android studio", "cocoapods", "xcode"]
+---
+
+ # Setting Up Your Dev Environment  
+ 
+In this section, we are going to describe how to configure your React Native development environment. The developer tools and the way we set everything up is entirely inspired by how we do the day to day mobile app development in React Native at Instamobile.
+
+## 0. Run an Empty React Native App on Your Computer
+If this is the first time ever that you run a React Native app, you must follow the official guide first. Create an empty app and make sure it builds and runs properly on your computer. Follow the steps outlined in the [official React Native documentation](https://reactnative.dev/docs/environment-setup). Make sure you do not use Expo CLI, but __React Native CLI__.
+
+## 1. Install Basic React Native Development Tools
+## 2. Configure React Native Development Environment for Android
+Let’s see how you can set up your development environment in order to run React Native apps. The setup shouldn’t take more than 5 minutes. __What do you need to install?__
+
++ Node (NPM) and React Native
++ Yarn
++ Git
++ (Optional, but Recommended) Visual Studio Code
++ (Optional) Android Studio
+Alright, let’s see how we install all of these. Simply follow the next steps:
+
++ Install Node by following the [official guide](https://nodejs.org/en/download/package-manager)
++ Install Git by following the steps in [this guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
++ Install [Yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable) by running the command:
+```mdx
+npm install --global yarn
+```
++ Install & Configure React Native by [following this guide](https://reactnative.dev/docs/getting-started), the __React Native CLI__ version. __DO NOT USE Expo CLI__!!
++ Download & Install [Visual Studio Code](https://code.visualstudio.com/) (recommended for developing React Native apps, especially on Windows, due to its powerful Terminal)
++ Download & Install [Android Studio](https://developer.android.com/studio) (needed only if you don’t have a physical Android device)
+Looks simple, right? It actually is. This is all you need to do to run React Native apps on Android devices or emulators.
+
+## 3. Configure React Native Development Environment for iOS
+a. Install __Cocoapods__
+
+b. Install __Xcode__ You can find detailed explanations on how to install these tools in the [Running on iOS](/../../docs/getting-started-with-react-native/running-on-ios) section.
+
+## 4. Install More Advanced Developer Tools
+We highly recommend you to install the __React Native Debugger__ tool. It helps you debug React Native apps with breakpoints, visualize the redux state changes in real-time and inspect the view hierarchy. We wrote a full article on how to [debug React Native apps](https://instamobile.io/react-native-tutorials/react-native-breakpoints-debugging/) using the React Native Debugger.
+

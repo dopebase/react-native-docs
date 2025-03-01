@@ -1,0 +1,80 @@
+---
+title: "Chat Data Schema for Firebase"
+description: "Learn how to store chat data in Firebase for chat channels and messages in your app. This guide covers the structure and fields for messages, channels, and more."
+keywords: ["firebase", "chat schema", "chat data", "firestore", "react native", "chat app", "data modeling"]
+---
+
+# Chat  
+
+Let’s see how we store the data for all of the chat channels and messages that users create within our apps.
+
+For a chat feature, we have two main types of data:
+
+messages – the actual messages that are sent between users, in various formats (text, audio, video, photo, etc)
+channels – the list of different channels that a user is part of (1-1 channels & group channels)
+To support all the use cases and features, here’s how we model our data into Firestore.
+
+## `social_feeds/{userID}/chat_feed/{channelID}/{channelData}`
+
+This collection is used for quickly loading all the channels a given user is part of. For example, this is used to quickly load the home screen with all the conversations in the chat app. It contains all the conversations (channels) that a user is part of, along with the metadata needed in the UI (e.g. profile photos of the other users, name of the conversation, marked as read flag, etc).
+
+Here’s what the fields look like:  
+
+```mdx 
+id // the id of the channel
+title // the title of the conversation as it shows in the userID's conversations timeline
+content // the text message that shows as the preview of the conversation in the conversations timeline (e.g. "Someone sent a photo")
+markedAsRead // boolean flag indicating whether the current user read the message or not (so it gets bolded out in the UI)
+createdAt // the creation date, used for displaying the time text (e.g. "5 min ago")
+participants // the list of the participants, used for display the avatars (and multi-avatars view for the group chats)  
+```  
+
+__Important!!!__ For a 1-1 chat (that’s a chat between exactly 2 users), the channel ID is always the concatenation of the two user IDs that participate to the chat. In React Native, it is computed as following:  
+
+`const channelID = id1 < id2 ? id1 + id2 : id2 + id1 // where id1 and id2 are the IDs of the two participant users` 
+
+This helps you trigger the chat screen in one line of code, from anywhere in the source code, since you only need two user IDs to trigger it.
+
+## `channels/{channelID}/{channelData}`
+
+This collection gives us the metadata for a given channel. It contains data such as the name of the channel (e.g. the group name), the channel ID (unique identifier), as well as more complex data such as the user IDs that read the last message, the participant IDs, the typing users list (users who are currently typing in the chat), etc.
+
+Here’s the exact field names: 
+
+```mdx 
+id,
+creatorID,
+lastMessage,
+lastMessageSenderId,
+lastThreadMessageId,
+name,
+participantProfilePictureURLs,
+participants,
+readUserIDs,
+typingUsers 
+```  
+
+## `channels/{channelID}/thread/{messageID}/{messageData}`
+
+For a given channel, this subcollection gives us all the messages that were posted in that chat, along with all the metadata needed in the chat UI (e.g. photos, media, creation date, etc).
+
+Here’s what the message data fields look like:  
+
+```mdx
+content // the text message, if the message is of text type
+createdAt,
+inReplyToItem // the ID of the message that was replied to (this is for the in Reply To feature)
+participantProfilePictureURLs // the list of profile photo URLs for the participants in the chat
+readUserIDs, // the IDs of all the users who saw this message
+senderFirstName, // the sender info, used for performance (to quickly load all the data of this message)
+senderID,
+senderProfilePictureURL,
+url // the URL of the media, if the message is of type photo, video or audio 
+```  
+
+If the message is a media message (photo, video or audio), the url field above has the following structure:  
+
+```mdx
+url, // the download URL of the media asset
+mime, // the mime type, specifying what type of asset this is (photo, video or audio) so we can render it properly on the client 
+``

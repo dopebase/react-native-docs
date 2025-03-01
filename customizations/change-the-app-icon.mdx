@@ -1,0 +1,23 @@
+---
+title: "Change the app icon"
+description: "Learn how to quickly change the app icon for both iOS and Android apps with this step-by-step guide."
+keywords: ["change app icon", "ios app icon", "android app icon", "app icon tutorial", "app icon guide"]
+---
+
+# Change the app icon
+  
+The quickest way to change the app logo of an iOS app is this:
+
+1. Prepare a 1024x1024px app icon (you’ll need this for the App Store too)
+2. Head over to [makeappicon](https://makeappicon.com/) to generate all the app icon sizes needed for the app automatically.
+3. __iOS__: Download the __AppIcon.appiconset__ folder and override the existing one at __ios/Assets.xcassets/AppIcon.appiconset__
+4. __Android__: Copy the folders from the downloaded “android” directory and override the subfolders of __android/app/src/main/res__
+
+
+That’s it. Your AppIcon should look like this in Xcode now:  
+
+![](/../static/img/Screen-Shot-2020-04-18-at-5.30.10-PM-1024x592.png)  
+
+And for Android: 
+
+![](/../static/img/Screen-Shot-2020-04-20-at-11.29.05-AM.png)

@@ -1,0 +1,56 @@
+---
+title: "Deploy Payments Backend to Heroku"
+description: "Learn how to deploy your payments backend to Heroku for accepting payments with Stripe and Paypal. Follow this step-by-step guide to set up your secure server."
+keywords: ["deploy payments backend", "heroku", "stripe payments", "paypal payments", "secure server", "heroku deployment guide"]
+---
+
+# Deploy Payments Backend to Heroku  
+
+In order to accept payments with Stripe and Paypal, you need your own secure server for processing payment requests. Fortunately, you can build this for free and within a few minutes, with __Heroku__. Create a free [Heroku](https://id.heroku.com/login) , [Stripe](https://stripe.com/en-ro) , and [Brain tree (For Paypal)](https://www.braintreepayments.com/ro/sandbox) account if you don’t have one already. After creating a stripe account, you should get the essential keys For test and production mode. [stripe API keys](https://dashboard.stripe.com/login?redirect=%2Faccount%2Fapikeys). 
+
+For Paypal, to get your necessary credentials, click on the gear icon at the top right of your profile then click API.  
+
+            ![](/../static/img/Screenshot-2021-07-02-at-16.17.23.png) 
+
+__1. Download the “instamobile-payments-server” app__ [here](/instamobile-payments-server.zip).
+
+__2. In the downloaded project, open “.env” and update it with your Stripe keys and Paypal keys__
+
+Note: Make sure you open .env file using a Terminal, the file won’t be visible in Finder / Window Explorer. (e.g. run this command: __open .env__)  
+
+__3. Deploy a Middleware To Heroku To Use Stripe Payment.__
+
+First make sure you have Git and Heroku command installed.  
+
+   + [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+   + [Install Heroku](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)  
+
+__5. Now you have Heroku and Git installed.__
+
+Before you can deploy your middleware app to Heroku, you need to initialize a local Git repository and commit your application code to it.
+– The following example demonstrates how to initialize a Git repository for your middleware app: stripeServer, that lives in the stripeServer directory: One after the other, Run command:  
+
+```mdx 
+cd stripeServer
+git init
+git add .
+git commit -m "My first commit" 
+```  
+“NOTE: Be sure to initialize the Git repository in your app’s root directory. If your app is in a subdirectory of your repository, it won’t run when it is pushed to Heroku.” __6. Next, Create a Heroku remote__. “NOTE: You should note that the command bellow will prompt you to press any key to open a browser where you will be required to enter your Heroku account details” Run command:  
+
+```mdx
+heroku create
+```  
+You should then get a new link for your middleware app on Heroku. The link should look something like this: “https://xxxxx-xxxx-xxxxx.herokuapp.com/“ copy this link somewhere. Open “src/ShopertinoConfig.js” (or src/VendorAppConfig.js depending on which app you are installing) and update the Stripe URL with the copied link there. __7. Next, confirm that a remote named Heroku has been set for your app__.
+
+Run Command:
+  
+  ```mdx
+  git remote -v
+```  
+__Finally, Deploying your code__. Run Command:
+
+```mdx
+git push heroku master
+```  
+And that is all. You have your middleware app on Heroku now.

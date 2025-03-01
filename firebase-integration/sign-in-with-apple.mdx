@@ -1,0 +1,24 @@
+---
+title: "Sign In with Apple Integration Guide"
+description: "Learn how to integrate Sign In with Apple in your mobile apps using Firebase Auth. Follow this step-by-step guide to configure Apple Sign In."
+keywords: ["sign in with apple", "firebase auth", "apple sign in integration", "mobile app authentication", "apple developer console"]
+---
+
+# Sign In with Apple  
+  
+  You should note that by April 2020, existing apps and app updates using external 3rd party login services (such as Facebook, Twitter, Google etc) must ensure that Apple Sign-In is also provided. To learn more about these new guidelines, view the [Apple announcement](https://developer.apple.com/news/?id=09122019b). Apple Sign-In is not required for Android devices. __Enable Apple Sign In on Firebase Auth__ Since most of our mobile apps are using Firebase Auth, in order to enable Apple Sign with your own Firebase project, head over to __Firebase Console__ -> __Authentication__ -> __Sign-in Methods__ -> __Apple__ and enable apple.  
+
+  ![](/../static/img/Screenshot-2020-07-13-at-5.41.41-PM-1024x580.png)  
+
+ ## Configuring Apple Sign In
+
++ Head over to [Apple’s developer console](https://developer.apple.com/). Click __Account__ in the nav bar at the top. You will either have to sign in, or create an account. Your account dashboard ought to look like this. If you do not see <span style={{ color: 'red' }}>Certificates, IDs & profiles </span> as an option in the left-hand sidebar, it means you have not yet enrolled in the [Apple developer program](https://developer.apple.com/programs/) which is a prerequisite for Apple product development.  
+
+![](/../static/img/Screenshot-2020-07-13-at-2.40.09-PM-1024x587.png)  
+
++ Click on <span style={{ color: 'red' }}>Identifiers</span> in the left-hand sidebar. Click on your project in the list or add one if you have no <span style={{ color: 'red' }}>Identifier </span> listed.
++ Tick the checkbox for <span style={{ color: 'red' }}> Sign in with Apple </span> and click the <span style={{ color: 'red' }}> Edit </span> button. Select <span style={{ color: 'red' }}> Enable as a primary App ID</span> and click <span style={{ color: 'red' }}> Save </span> button.  
+
+![](/../static/img/Screenshot-2020-07-13-at-5.05.30-PM-1024x500.png)
+  
+  + Click the <span style= {{ color: 'red' }}> Save</span> button at the top of the screen.

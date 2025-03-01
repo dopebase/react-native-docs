@@ -1,0 +1,30 @@
+---
+title: "Enable Firebase Storage for Your Mobile App"
+description: "Learn how to enable Firebase Storage for your mobile app to upload photos and videos seamlessly. Follow our step-by-step guide to configure Firebase Storage rules and fix iOS photo library access issues."
+keywords: ["firebase storage", "mobile app", "upload photos", "upload videos", "react native", "ios", "firebase integration"]
+---
+
+# Enable Firebase Storage  
+
+If your mobile app needs access to Firebase Storage (e.g. for uploading photos and videos, for instance), you have to enable Firebase Storage, so that the functionality works properly. To enable it, just go to Storage in the left menu. This is how your Storage rules need to look like in order for the app to function correctly:  
+ 
+ ```mdx 
+ service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+```  
+![](/../static/img/Screen-Shot-2019-04-09-at-10.07.33-PM-1024x422.png)  
+
+## Enable Photo & Video Uploads on iOS
+React Native 0.63.2 comes with a [bug](https://github.com/facebook/react-native/issues/29364) when accessing camera and the photo library. In order to work around this bug, you need to override __RCTLocalAssetImageLoader.m__ entirely.
+
+1. Copy the working source code from this [gist](https://gist.githubusercontent.com/mrcflorian/193675ed672a7579e22600f291f1a08b/raw/ce8dff39495ad445296e88b312020c924b23dd36/RCTLocalAssetImageLoader.mm)
+2. Open __node_modules/react-native/Libraries/Images/RCTLocalAssetImageLoader.m__ file (in Xcode, Sublime, vim, or any other text editor)
+3. Paste/Override the entire file with the content of the gist from step 1.
+4. Re-run the app in Xcode
+__Warning__: You MUST do this every time you reinstall node_modules. So if you remove the node_modules folder (by cleaning the project, starting a fresh project, etc), you must do this change again.
+

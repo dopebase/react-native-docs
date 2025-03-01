@@ -1,0 +1,79 @@
+---
+title: "PayPal Payments Integration Guide"
+description: "Learn how to integrate PayPal payments into your app, including setting up a payments server, testing locally, and deploying to Firebase."
+keywords: ["paypal payments", "integration guide", "payments server", "firebase deployment", "braintree", "node.js"]
+---
+
+# PayPal Payments   
+
+# 1. Deploying Your Payments Server  
+
+In order to setup Paypal, you’ll need your own Payments server. To test the payments in your app, you can deploy this server on your local machine.
+
+However, when you are planning to release the app to the App Store or Google Play Store, you’ll need to deploy the server publicly, in production. You can either deploy it to Firebase or Heroku, or any other hosting service that supports Node.js (e.g. Digital Ocean, AWS, etc).
+
+__Action Required__
+
+Prior to testing you PayPal integration you have to register for sandbox Braintree at https://sandbox.braintreegateway.com/login and get your necessary credentials by clicking on the gear icon at the top right of your profile then click API.  
+
+![](/../static/img/Screenshot-2021-07-02-at-16.17.23.png)  
+
+## Testing Locally  
+
+__1. Create a folder and navigate into the folder via the command line:__  
+
+```mdx 
+mkdir myapp
+cd myapp
+```  
+
+__2. Initialise the project and press enter for every prompt and then yes for the final question:__  
+
+```mdx 
+npm init  
+```  
+__3. Install the following dependencies:__   
+```mdx 
+npm install braintree express nodemon
+```  
+
+The above command installs <span style={{color: 'red' }}>braintree </span> the library provided by PayPal
+
+__4. Run the code using the following command__  
+
+```mdx 
+nodemon index.js 
+```  
+## Deploying to Firebase  
+
+For deploying to firebase you need to have gotten your production credentials at https://apply.braintreegateway.com/ then proceed to 
+
+1. Configure Firebase functions
+
+Run the following command to install Firebase functions globally on your machine 
+
+```mdx  
+npm install -g firebase-tools  
+```   
+then log into your firebase on your machine by running   
+
+```mdx  
+firebase login
+```  
+2. Create your Firebase function
+
+Create a folder to contain your Firebase functions project and then run the command to setup your folder structure  
+
+```mdx 
+firebase init functions  
+```  
+Please ensure that you click on the <span style={{color: 'red' }}> Create a new Project</span> option then enter your preferred <span style={{color: 'red' }}>unique project id</span> and use your preferred project name. You also have to choose Javascript as your choice of language to write with and select the option to install dependencies.
+
+3. The final step is to deploy your firebase  
+
+```mdx 
+npm run deploy
+```  
+And your backend should be live and you will get a URL to your new functions.
+
+

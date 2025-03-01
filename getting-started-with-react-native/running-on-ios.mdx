@@ -1,0 +1,86 @@
+---
+title: "Running on iOS with React Native"
+description: "Learn how to set up and run React Native apps on iOS using Xcode and other necessary tools. Follow our step-by-step guide to get started."
+keywords: ["react native", "ios", "xcode", "setup", "guide", "tutorial", "cocoapods", "running on ios"]
+---
+
+# Running on iOS  
+
+In this section, we are describing the steps that you need to do in order to run our React Native app templates on iOS, from setting up the environment to building the project in Xcode. To run a React Native on iOS, you need Mac OS and Xcode, but there’s no need for an Apple developer account or an iPhone – you can simply run any Xcode project on the iOS simulator. If you are not new to iOS / React Native development, and you already have the dev environment set up, simply do the following steps:
+
++ Be absolutely sure you have __the latest STABLE Xcode version__ (Make sure you are using Xcode 14.1 or latest)
++ Run “__yarn install && cd ios && pod install__” in the root folder of the downloaded project
++ Open .xcode.env read the instruction and set up .xcode.env.local 
++ Go back a directory with the command “__cd…__” and build your app with “__npx react-native run-ios__“
++ Select the iOS simulator / device and build and run the app (__Command__ + __R__)  
+
+If this is the first time you are running an iOS project on your machine, you need to set up your environment first. We recommend you to follow [the official Facebook documentation](https://reactnative.dev/docs/getting-started) first, on how to run React Native CLI apps. There are a few prerequisites that are iOS specific (you don’t need them for Android):
+
++ Install [Xcode](https://developer.apple.com/xcode/)
++ Install [CocoaPods](https://cocoapods.org/)
++ Install [React Native](https://reactnative.dev/docs/getting-started.html)  
+
+We’re assuming you already have the environment to run react native apps. If not, follow [Facebook’s documentation](https://reactnative.dev/docs/getting-started.html) for running native apps (__do not__ use Expo, you don’t need it). Follow the next quick steps to get your app running on an iOS device or iOS simulator.
+
+__1. Run “yarn install” in the project root directory__  
+
+Please make sure you are currently running node 16.
+check with command “__node –version__“. If not, use __nvm__ and run “__nvm use 16__″
+Then install dependencies with “__yarn install__“.
+
+__2. Locate the ios folder and run “pod install“__  
+
+This will install all the pods that the chat app depends on, such as Firebase Auth, Storage, etc. Make sure you have Cocoapods installed beforehand. Here’s how a successful output looks like:  
+
+  ![](/../static/img/Screen-Shot-2019-02-21-at-9.54.03-PM.png)  
+
+This will also generate a .xcworkspace file, that can be opened in Xcode.
+  
+![](/../static/img/Screen-Shot-2019-02-21-at-9.57.44-PM.png)  
+
+__3. Open “.xcode.env” read the instruction and set up “.xcode.env.local”__  
+
+At the end of the day, you want to have a “__.xcode.env.local__” file
+containing one line of code. eg:
+“__export NODE_BINARY=”/Users/sholaEmmanuel/.nvm/versions/node/v16.13.0/bin/node__“
+to get the absolute path to your node version, from command line, run the command: “__command -v node__“.
+You will get – “__/Users/sholaEmmanuel/.nvm/versions/node/v16.13.0/bin/node__”.
+now update __xcode.env.local__ with this.
+
+__4. Go back a directory with the command__  
+
+Simply go back a directory with “__cd..__“. Double check on the file in the terminal (make sure you are in the root project folder).
+
+__5. Run Command “npx react-native run-ios”__  
+
+Now build your app with the command “__npx react-native run-ios__“.
+Once your ios app builds successfully, remember to click on your simulator and press on your keyboard, (__Command__ + __R__ ) to refresh js bundle after it is has finished compiling.
+
+![](/../static/img/Screen-Shot-2019-02-21-at-10.21.45-PM-1024x564.png)
+
+## Frequently Asked Questions  
+
+__1. I’m getting a red screen error saying the metro bundler is not running__  Sometimes, Xcode cannot open the metro bundler by itself, so you need to open it manually. To do that, simply open a Terminal window, locate the project folder and run:
+  
+  ```mdx
+  yarn install && npm start -- --reset-cache  
+   ```
+Now, the packager server has started – keep this window open and re-build the project in Xcode.
+
+__2. I’m getting a glog error (/configure:-1: in `node_modules/react-native/third-party/glog-0.3.4′:)__ This error might appear in some environments. To fix it, locate the glog folder. Assuming you’re in the root folder:
+  
+  ```mdx
+cd node_modules/react-native/third-party/glog-0.3.4/  
+```  
+
+And run  
+
+```mdx
+./configure  
+```  
+
+Now run your Xcode project again and the error will be gone.  
+
+__3. I’m getting error: Build input file cannot be found: ‘node_modules/react-native/Libraries/WebSocket/libfishhook.a’__ If you run into this error, click on the RTCWebSocket subproject in Xcode -> Build Phases -> Link Binary with Libraries and remove the libfishhook.a entry. Now add it again (yes, it’s crazy – welcome to react native!). Then re-build the project and everything should work now.react native xcode
+
+![](/../static/img/Screen-Shot-2019-02-21-at-10.13.37-PM.png)

@@ -1,0 +1,40 @@
+---
+title: "Adding New Languages to React Native Templates"
+description: "Learn how to add support for new languages in our premium React Native templates with built-in localization and RTL support."
+keywords: ["react native", "localization", "rtl", "translations", "new languages", "language support"]
+---
+
+# Adding New Languages
+
+All of our premium [React Native templates](https://instamobile.io/) come with built-in support for localization and RTL. This means that making the app compatible with and translating it to any language is trivial (as long as you have someone who speaks that language, of course). In this article, you’ll learn how to add support for a new language.
+
+## 1. Create a translations file
+
+For each language that you want the app to support you need to create a translations file.
+
+__1.1 In src/translations folder, create a duplicate of the en.json file.__
+
+__1.2 Rename this duplicate file with the [language code](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) (ISO 639-1 column)__. For example, for Spanish, the file will be “es.json”, for French, the file will be “fr.json”, and so on.
+
+__1.3 Translate all the texts into that language__ The file acts as a dictionary, containing keys (which are in English and should remain untouched) and values (the translation – which needs to be in the new language). For example, this is how the English file looks like:  
+
+![](/../static/img/Screen-Shot-2020-03-04-at-10.27.20-AM.png)  
+
+And this is how an Arabic file will look like, as an example:  
+
+![](/../static/img/Screen-Shot-2020-03-04-at-10.28.25-AM.png)  
+
+Keep in mind, that every time you add a new string, you need to add the correct translations in all files (all supported languages), otherwise that string will be displayed in English.
+
+## 2. Add your new language to the list of supported languages  
+
+Open __src/translations/index.js__ file and add your new language code mapped to the translations file you created previously as follows:  
+
+![](/../static/img/Screenshot-2023-08-07-at-2.23.52-PM.png)  
+
+
+For example, if you want to add Spanish (assuming you already created the es.json file at the previous step), your translation getters will looks like this:  
+
+![](/../static/img/Screenshot-2023-08-07-at-2.24.36-PM.png)  
+
+Now build and run the app again (restart the metro bundler too). Change your device settings to the new language and the entire app will be displayed in that language. Pretty cool, right?

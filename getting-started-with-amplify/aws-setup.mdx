@@ -1,0 +1,237 @@
+---
+title: "AWS Setup for React Native with Amplify"
+description: "Learn how to set up AWS Amplify with your React Native project, including user authentication, GraphQL API, Lambda functions, and storage."
+keywords: ["aws setup", "react native", "amplify", "aws amplify", "user authentication", "graphql api", "lambda functions", "amazon s3", "aws configuration"]
+---
+
+import Note from "@theme/Admonition";
+import Admonition from "@theme/Admonition";
+
+# AWS Setup 
+
+## Introduction
+
+<Admonition type="info" title="Overview" icon="💡">
+Here we will show you how to integrate your React Native project with a back-end using AWS Amplify.
+
+##### What is included in your AWS Amplify Project:
+
+- User authentication (AWS Cognito).
+- GraphQL API (AppSync)
+- Lambda function and Lambda Trigger function
+- Storage using Amazon S3. 
+</Admonition>
+
+
+## Setup
+
+To get started with AWS Amplify in your React Native project, you'll need to install and configure the Amplify CLI by clicking [here](https://docs.amplify.aws/gen1/react-native/start/getting-started/installation/) to find out exactly how to do that.
+
+## Configuration:
+
+### Initialise the AWS Amplify project
+
+From command line at the root of your project run: 
+`amplify init`  
+
+You will be asked:
+
++ Enter a name for the environment (dev)
++ Choose your default editor
++ Select the authentication method you want to use with two options: AWS profile ,  AWS access keys.
++ Select AWS profile and select the profile you will like to use.  
+
+This is what it would look like:
+
+![](/../static/img/Screen-Shot-2024-11-05-at-1.34.59-PM.png) 
+
+
+After doing this, you will be done with initialising ur project.
+
+To see your resources available to push, run: 
+`amplify status`  
+run the command bellow to push auth
+`amplify push auth`
+run the command bellow to push api
+`amplify push api`   
+
+This is what it would look like:
+
+![](/../static/img/Screen-Shot-2024-11-05-at-1.37.57-PM.png) 
+
+
+Now to push the functions, you need to:
+- Configure a new server app client for your function
+- Add environment variables for your functions.
+- Register a user in your react native app to access app client in your functions
+- Delete created account in dynamoDB 
+
+
+### Configure a server app client for your function
+
+1. **Log in to your AWS Amplify account**.
+2. Click on the **search input**, and enter **Cognito**. Click on **Cognito** under **Services**.
+3. Copy the **User pool ID** and paste it somewhere (you will need it later).
+
+![User Pools Screenshot](/../static/img/annotely_image_8.jpeg)
+
+
+4. After copying the pool id, click on the **App clients** section.
+5. Click on **Add another app client**.
+
+![App Clients Screenshot](/../static/img/annotely_image_9.jpeg)
+
+7. Give it any name you want.
+8. Set your **Auth Flows Configuration** like in the image below:
+
+![App Clients Screenshot](/../static/img/annotely_image_7.jpeg)
+
+9. After saving, you will have your **App client id**. Copy it and paste it somewhere.
+
+Now you have the **Pool id** (Cognito user pool id) and **App client id** saved.
+
+### Add environment variables for your functions
+
+You will need to update the environment variables for the two **Lambda functions**. To do this, run the command:
+
+```bash
+amplify update function
+```
+Select any of the functions, then select **Environment variables configuration**. Configure each environment variable with the names and values as written above.
+
+- **COGNITO_CLIENT_ID**: `<app-client-id>`
+- **COGNITO_USER_POOL_ID**: `<pool-id>`
+- **ADMIN_USER_USERNAME**: `<chosen-username>`
+- **ADMIN_USER_PASSWORD**: `<chosen-password>` (password must be a minimum of 8 characters with numbers)
+
+The process should look like: 
+
+![Environment Configuration Screenshot](/../static/img/annotely_image_10.jpeg)
+
+Also navigate to the `src` directory in the two functions and run
+ ```bash 
+ cd amplify/backend/function/instamobileFunction/src 
+ npm install
+ ```  
+### Repeat the process for the second function.
+
+Remember you need to repeat this process for the second function (`instamobileTrigger`). And this is all. you can now push your functions by running the command:
+```bash
+amplify push function
+```
+
+
+### Register a user in your react native app to access app client in your functions 
+
+You need to do this in order to give your functions access to app sync using access token from ur created app client.
+Now go to your react native app and register a new user with your chosen **username(email)** and **chosen password** you added as environment variables
+
+### Delete created account from dynamoDB  
+
+Now search for dynamoDb in the search input on your account on the web 
+
+![](/../static/img/Screenshot-2022-05-20-at-2.54.58-PM-1024x350.png)  
+
+– Click on __DynamoDB__ under services
+– Select __Tables__ section at the left, then __explore items__
+– Select user and delete the newly created user from ur __dynamoDb__ so it is not accessible to other users.
+
+![](/../static/img/Screenshot-2022-05-20-at-2.57.48-PM-768x359.png) 
+
+
+Your app is ready to use.
+
+
+<Admonition type="success" title="Ready to Build!" icon="🚀">
+Your Amplify CLI is now configured and ready to use. You can start building your AWS-powered applications with full access to AWS services through Amplify.
+</Admonition>
+
+<Admonition type="note" title="Trobleshooting" icon="⚙️">
+If you're facing problems with your storage. You can remove and add it again by running commands.
+
+```bash
+amplify remove storage
+amplify push storage
+amplify add storage
+amplify push storage
+```
+![Storage Configuration](/../static/img/Screen-Shot-2024-11-05-at-4.19.48-PM.png)
+</Admonition>
+
+
+
+
+
+<!-- 
+## Configure a server app client for your function
+login to your amplify account
+click on the __search input__, and enter __cognito__ and cick on __cognito__ under __services__ 
+click on __Manage User Pools__ and select your already created userpool  
+
+![](/../static/img/Screenshot-2022-03-22-at-9.50.59-AM-1024x372.png) 
+
+Copy the __pool id__ and paste it some where. (you will need it later)
+After copying the pool id, click on __App clients__ section
+You need to __add another app client__. So click on that.  
+
+![](/../static/img/Screenshot-2022-03-22-at-9.54.19-AM-1024x449.png)  
+
+Give it which ever name you want.
+Set your __Auth Flows Configuration__ like in the image below: 
+
+![](/../static/img/Screenshot-2022-05-20-at-10.55.37-AM-1024x523.png)  
+
+After saving, you will have your __App client id__. You should also copy that and paste it somewhere.
+
+Now we have the __Pool id__ (cognito user pool id) and __App client id__ copied and pasted somewhere.
+
+## Add environment variables for your functions
+
+You will need to update the environment variables for the two __lamda functions__.
+The variable names and values.
+The values will be what you previously copied and saved. The __app client id__, __pool id__ and the rest.
+(note your choosen __username(email)__ and __password__.)
+(password must be a minimum of 8 characters with numbers)
+ 
+ – COGNITO_CLIENT_ID: `<app-client-id>`
+
+– COGNITO_USER_POOL_ID: `<pool-id>`
+
+– ADMIN_USER_USERNAME: `<chosen-username>`
+
+– ADMIN_USER_PASSWORD: `<chosen-password>` 
+ 
+ To do this, run the command
+
+`amplify update function`
+
+select any of the functions
+then select __Environment variables configuration__
+Then configure for each environment variable, the names and values as written above
+
+## Remember you need to repeat this process for the second function. 
+
+And this is all. you can now push your functions by running the command:
+amplify push function
+
+Your app is ready to use. -->
+
+<!-- ## Register a user in your react native app to access app client in your functions 
+
+You need to do this in order to give your functions access to app sync using access token from ur created app client.
+Now go to your react native app and register a new user with ur __chosen username(email)__ and __chosen password__ you added as environment variables
+
+## delete created account from dynamoDB  
+
+Now search for dynamoDb in the search input on your account on the web 
+
+![](/../static/img/Screenshot-2022-05-20-at-2.54.58-PM-1024x350.png)  
+
+– Click on __DynamoDB__ under services
+– Select __Tables__ section at the left, then __explore items__
+– Select user and delete the newly created user from ur __dynamoDb__ so it is not accessible to other users.
+
+![](/../static/img/Screenshot-2022-05-20-at-2.57.48-PM-768x359.png) 
+
+This is all. Your app is ready to use.
+ -->

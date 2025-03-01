@@ -1,0 +1,37 @@
+---
+title: "Create a Facebook App for Facebook Login"
+description: "Learn how to create a Facebook app and set up Facebook Login for your mobile apps using Firebase Auth."
+keywords: ["facebook login", "create facebook app", "firebase auth", "mobile app authentication", "facebook developers"]
+---
+
+# Facebook Login - Create Facebook App
+  
+  To set up Login with Facebook, one needs a Facebook app, which can be created at [Facebook Developers](https://developers.facebook.com/). By default, our mobile templates use a default test Facebook app, which will not work for you. Especially in production. Setting up Facebook Login on our mobile templates is done exactly as in the Facebook’s official documentation, since our apps are normal mobile apps. However, most of the work is already done for you by us, since the code implementation is complete. Code wise, you only need to configure a few parameters, on both iOS and Android.
+
+__1. Create a__ [Facebook App](https://developers.facebook.com/)
+
+__2. Obtain the Facebook App ID and App Secret__ 
+
+This can be found in __Facebook Developers__ -> __Select app__ -> __Settings__ -> __Basic__.  
+
+![](/../static/img/Screen-Shot-2020-03-12-at-3.11.15-PM.png)   
+
+__3. Enable Facebook Login in Firebase Auth__
+
+Since most of our mobile apps are using Firebase Auth, in order to enable Facebook Login with your own Firebase project, head over to __Firebase Console__ -> __Auth__ -> __Sign-in Methods__ -> __Facebook__ and type in the requested fields (Facebook App ID and App Secret) from the previous step. On this screen, __you must also copy to clipboard the OAuth redirect URI__.  
+
+![](/../static/img/Screen-Shot-2020-03-12-at-3.13.12-PM-copy.png)  
+
+__4. Place the OAuth Redirect URI into Facebook App config__
+
+Take the previously copied OAuth Redirect URI, and paste it in __Facebook Developers__ -> __Select app__ -> __Facebook Login__ -> __Settings__ -> __Valid OAuth Redirect URIs__ and Save.   
+
+![](/../static/img/Screen-Shot-2020-03-12-at-3.20.03-PM.png)  
+
+Now that we’ve set up the Facebook app and Facebook Login through Firebase Auth, go to your project and find your config file __src/DatingConfig.js__ and enter your Facebook App ID.  
+
+```mdx 
+facebookIdentifier: '285315******',
+``` 
+
+
